@@ -8,8 +8,8 @@ export default function Header () {
     <header className={`${styles.header} mainLayout`}>
       <div className={styles.container}>
         <Logo />
-        <NavLink text='Home'/>
-        <NavLink text='My List'/>
+        <NavLink text='Home' href='/'/>
+        <NavLink text='My List' href='/my-list'/>
         <div className={styles.dropdownWrapper}>
            <Dropdown text='andrescasa@gmail.com' />
         </div>

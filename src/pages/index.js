@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { Roboto_Slab } from 'next/font/google'
 import Hero from '@/components/molecules/Hero'
 import Header from '@/components/organisms/Header'
+import MoviesSection from '@/components/molecules/MoviesSection'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
@@ -23,6 +24,9 @@ export default function Home () {
           title={'Clifford the red dog'}
           subtitle={'A very cute dog'}
         />
+        <MoviesSection sizeOfCards='big' subtitle='subTitle'/>
+        <MoviesSection sizeOfCards='mid' subtitle='subTitle'/>
+        <MoviesSection sizeOfCards='small' subtitle='subTitle'/>
       </main>
     </>
   )

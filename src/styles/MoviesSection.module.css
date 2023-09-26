@@ -1,0 +1,26 @@
+.movies-section {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  padding-top: 1em;
+  padding-bottom: 2em;
+  overflow: hidden;
+}
+
+.scroll {
+  z-index: 0;
+  padding: 2em;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+.scroll::-webkit-scrollbar {
+  background: transparent;
+}
+
+.movies-section__cards-container {
+  display: flex;
+  gap: .2em;
+  width: fit-content;
+}

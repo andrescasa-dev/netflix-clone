@@ -10,6 +10,7 @@
 
 .container {
   display: flex;
+  padding-block: .6em;
   align-items: center;
   gap: 2em;
 }
