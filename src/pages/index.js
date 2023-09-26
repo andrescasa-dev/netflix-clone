@@ -1,8 +1,10 @@
 import Head from 'next/head'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+// eslint-disable-next-line camelcase
+import { Roboto_Slab } from 'next/font/google'
+import Hero from '@/components/molecules/Hero'
+import Header from '@/components/organisms/Header'
 
-const inter = Inter({ subsets: ['latin'] })
+const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
 export default function Home () {
   return (
@@ -13,8 +15,14 @@ export default function Home () {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.mainLayout} ${inter.className}`}>
-        <h1>Netflix clone</h1>
+      <main className={`mainLayout ${robotSlab.className}`}>
+        <Header />
+        <Hero
+          backgroundImgUrl='/clifford.webp'
+          imgUrl='/logo.webp'
+          title={'Clifford the red dog'}
+          subtitle={'A very cute dog'}
+        />
       </main>
     </>
   )

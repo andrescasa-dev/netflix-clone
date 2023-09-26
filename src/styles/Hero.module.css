@@ -1,0 +1,16 @@
+.title {
+  font-size: 3rem;
+}
+
+.container {
+  /* body wide layout */
+  position: relative;
+  grid-column-start: 1;
+  grid-column-end: -1;
+  padding-block: 5em 9em;
+}
+
+.contentContainer {
+  /* this is grid */
+  gap: 2em;
+}
