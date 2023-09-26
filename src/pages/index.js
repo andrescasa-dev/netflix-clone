@@ -8,6 +8,38 @@ import MoviesSection from '@/components/molecules/MoviesSection'
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
 export default function Home () {
+  const videos = [
+    {
+      id: 1,
+      imgAlt: 'movie image',
+      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
+    },
+    {
+      id: 2,
+      imgAlt: 'movie image',
+      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
+    },
+    {
+      id: 3,
+      imgAlt: 'movie image',
+      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
+    },
+    {
+      id: 4,
+      imgAlt: 'movie image',
+      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
+    },
+    {
+      id: 5,
+      imgAlt: 'movie image',
+      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
+    },
+    {
+      id: 6,
+      imgAlt: 'movie image',
+      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
+    }
+  ]
   return (
     <>
       <Head>
@@ -24,9 +56,9 @@ export default function Home () {
           title={'Clifford the red dog'}
           subtitle={'A very cute dog'}
         />
-        <MoviesSection sizeOfCards='big' subtitle='subTitle'/>
-        <MoviesSection sizeOfCards='mid' subtitle='subTitle'/>
-        <MoviesSection sizeOfCards='small' subtitle='subTitle'/>
+        <MoviesSection sizeOfCards='big' videos={videos} subtitle='subTitle'/>
+        <MoviesSection sizeOfCards='mid' videos={videos} subtitle='subTitle'/>
+        <MoviesSection sizeOfCards='small' videos={videos} subtitle='subTitle'/>
       </main>
     </>
   )

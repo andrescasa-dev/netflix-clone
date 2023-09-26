@@ -24,3 +24,7 @@
 .hoverEffect:hover {
   transform: scale(1.1);
 }
+
+.hoverEffect--first-element:hover {
+  transform: scale(1, 1.1);
+}

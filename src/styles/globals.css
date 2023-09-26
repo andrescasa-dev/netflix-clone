@@ -172,6 +172,7 @@ body {
   color: white;
 }
 
+
 .mainLayout {
   position: relative;
   display: grid;
@@ -180,4 +181,14 @@ body {
 
 .mainLayout>* {
   grid-column-start: 2;
+}
+
+/* this class broke the main layout, letting spread over the viewport */
+.viewport-layout {
+  grid-column-start: 1;
+  grid-column-end: -1;
+}
+
+::-webkit-scrollbar {
+  background: transparent;
 }

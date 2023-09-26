@@ -8,7 +8,7 @@ import styles from '@/styles/Hero.module.css'
 
 export default function Hero ({ title, subtitle, imgUrl, backgroundImgUrl }) {
   return (
-    <div className={styles.hero}>
+    <div className={`${styles.hero} viewport-layout`}>
       <Image
         fill={true}
         src={backgroundImgUrl}

@@ -1,23 +1,32 @@
 import styles from '@/styles/MovieCard.module.css'
 import Image from 'next/image'
+import { useState } from 'react'
 
-export default function MovieCard ({ size, imgUrl, alt }) {
-  const getContainerSize = () => {
-    switch (size) {
-      case 'big':
-        return styles['container--big']
-      case 'mid':
-        return styles['container--mid']
-      case 'small':
-        return styles['container--small']
-      default:
-        return styles['container--small']
-    }
+export default function MovieCard ({ size = 'mid', imgUrl = '', alt, id }) {
+  const [finalImgUrl, setFinalImgUrl] = useState(imgUrl)
+
+  const sizeMap = {
+    big: styles['container--big'],
+    mid: styles['container--mid'],
+    small: styles['container--small']
   }
 
+  const handleError = (e) => {
+    console.error('Error loading image of MovieCard')
+    setFinalImgUrl(process.env.NEXT_PUBLIC_DEFAULT_IMG_URL)
+  }
+
+  const hoverEffect = id === 1 ? styles['hoverEffect--first-element'] : styles.hoverEffect
+
   return (
-    <article className={`${styles.container} ${getContainerSize()} ${styles.hoverEffect}`}>
-      <Image style={{ borderRadius: '.4em' }} fill={true} objectFit='cover' src={imgUrl} alt={alt}/>
+    <article className={`${styles.container} ${sizeMap[`${size}`]} ${hoverEffect}`}>
+      <Image
+        style={{ borderRadius: '.4em' }}
+        fill={true} objectFit='cover'
+        src={finalImgUrl}
+        alt={alt}
+        onError={handleError}
+      />
     </article>
   )
 }
