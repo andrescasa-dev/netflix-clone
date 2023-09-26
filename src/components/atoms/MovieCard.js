@@ -2,11 +2,6 @@ import styles from '@/styles/MovieCard.module.css'
 import Image from 'next/image'
 
 export default function MovieCard ({ size, imgUrl, alt }) {
-  //       w   h
-  // big: 218x432
-  // mid: 158x280
-  // small: 300x170
-  console.log(styles)
   const getContainerSize = () => {
     switch (size) {
       case 'big':

@@ -3,7 +3,7 @@ import styles from '@/styles/NavLink.module.css'
 
 export default function Header ({ text, href }) {
   return (
-    <Link className={styles.navLink} href={href}>
+    <Link className={styles['nav-link']} href={href}>
       {text}
     </Link>
   )

@@ -8,13 +8,13 @@
   background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5248949921765581) 22%, rgba(0, 0, 0, 1) 100%);
 }
 
-.container {
+.header__content {
   display: flex;
   padding-block: .6em;
   align-items: center;
   gap: 2em;
 }
 
-.dropdownWrapper {
+.header__dropdown {
   margin-left: auto;
 }

@@ -1,16 +1,14 @@
-.title {
-  font-size: 3rem;
-}
-
-.container {
-  /* body wide layout */
+.hero {
   position: relative;
   grid-column-start: 1;
   grid-column-end: -1;
   padding-block: 5em 9em;
 }
 
-.contentContainer {
-  /* this is grid */
+.hero__container {
   gap: 2em;
+}
+
+.hero__title {
+  font-size: 3rem;
 }

@@ -6,11 +6,11 @@ import styles from '@/styles/Header.module.css'
 export default function Header () {
   return (
     <header className={`${styles.header} mainLayout`}>
-      <div className={styles.container}>
+      <div className={styles.header__content}>
         <Logo />
         <NavLink text='Home' href='/'/>
         <NavLink text='My List' href='/my-list'/>
-        <div className={styles.dropdownWrapper}>
+        <div className={styles.header__dropdown}>
            <Dropdown text='andrescasa@gmail.com' />
         </div>
       </div>
