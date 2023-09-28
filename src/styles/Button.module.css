@@ -10,6 +10,9 @@
   gap: .1rem;
 }
 
+.button--full-width {
+  max-width: 100%;
+}
 
 .button:hover {
   background-color: var(--red10);
