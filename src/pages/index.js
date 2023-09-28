@@ -4,42 +4,30 @@ import { Roboto_Slab } from 'next/font/google'
 import Hero from '@/components/molecules/Hero'
 import Header from '@/components/organisms/Header'
 import MoviesSection from '@/components/molecules/MoviesSection'
+import { getVideosBySearch } from '@/lib/getVideosBySearch'
+import { getPopularVideosByLocation } from '@/lib/getPopularVideosByLocation'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
-export default function Home () {
-  const videos = [
-    {
-      id: 1,
-      imgAlt: 'movie image',
-      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
-    },
-    {
-      id: 2,
-      imgAlt: 'movie image',
-      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
-    },
-    {
-      id: 3,
-      imgAlt: 'movie image',
-      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
-    },
-    {
-      id: 4,
-      imgAlt: 'movie image',
-      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
-    },
-    {
-      id: 5,
-      imgAlt: 'movie image',
-      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
-    },
-    {
-      id: 6,
-      imgAlt: 'movie image',
-      imgUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80'
-    }
-  ]
+export async function getServerSideProps () {
+  try {
+    // calling YouTube API
+    const actionVideos = await getVideosBySearch('action')
+    const horrorVideos = await getVideosBySearch('horror')
+    const popularVideos = await getPopularVideosByLocation(['21.5922529', '-158.1147114'])
+
+    // send data via props to the client side component
+    return { props: { actionVideos, horrorVideos, popularVideos } }
+  } catch (error) {
+    console.error('error in SSR MovieSection')
+    console.error(error)
+    return { props: { videosData: [] } }
+  }
+}
+
+export default function Home (props) {
+  const { horrorVideos, actionVideos, popularVideos } = props
+
   return (
     <>
       <Head>
@@ -56,9 +44,9 @@ export default function Home () {
           title={'Clifford the red dog'}
           subtitle={'A very cute dog'}
         />
-        <MoviesSection sizeOfCards='big' videos={videos} subtitle='subTitle'/>
-        <MoviesSection sizeOfCards='mid' videos={videos} subtitle='subTitle'/>
-        <MoviesSection sizeOfCards='small' videos={videos} subtitle='subTitle'/>
+        <MoviesSection sizeOfCards='big' videos={horrorVideos} subtitle='Horror'/>
+        <MoviesSection sizeOfCards='mid' videos={actionVideos} subtitle='Action'/>
+        <MoviesSection sizeOfCards='small' videos={popularVideos} subtitle='Popular'/>
       </main>
     </>
   )

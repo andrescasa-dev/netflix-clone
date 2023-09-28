@@ -6,9 +6,9 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt, id }) {
   const [finalImgUrl, setFinalImgUrl] = useState(imgUrl)
 
   const sizeMap = {
-    big: styles['container--big'],
-    mid: styles['container--mid'],
-    small: styles['container--small']
+    big: styles['card--big'],
+    mid: styles['card--mid'],
+    small: styles['card--small']
   }
 
   const handleError = (e) => {
@@ -19,14 +19,14 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt, id }) {
   const hoverEffect = id === 1 ? styles['hoverEffect--first-element'] : styles.hoverEffect
 
   return (
-    <article className={`${styles.container} ${sizeMap[`${size}`]} ${hoverEffect}`}>
-      <Image
-        style={{ borderRadius: '.4em' }}
-        fill={true} objectFit='cover'
-        src={finalImgUrl}
-        alt={alt}
-        onError={handleError}
-      />
+    <article className={`${styles.card} ${sizeMap[`${size}`]} ${hoverEffect}`}>
+        <Image
+          fill={true}
+          objectFit='cover'
+          src={finalImgUrl}
+          alt={alt}
+          onError={handleError}
+        />
     </article>
   )
 }
