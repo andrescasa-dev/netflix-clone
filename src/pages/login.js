@@ -3,7 +3,7 @@ import Input from '@/components/atoms/Input'
 import Logo from '@/components/atoms/Logo'
 import Head from 'next/head'
 import styles from '@/styles/login.module.css'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import magic from '@/lib/magicClient'
 import { useRouter } from 'next/router'
 
@@ -16,8 +16,19 @@ export default function Login () {
   const [loadingMagic, setLoadingMagic] = useState(false)
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.com|es$/i
   const inputRef = useRef(null)
-
   const router = useRouter()
+
+  useEffect(() => {
+    const stopLoading = () => {
+      setLoadingMagic(false)
+    }
+    router.events.on('routeChangeComplete', stopLoading)
+    router.events.on('routeChangeError', stopLoading)
+    return () => {
+      router.events.off('routeChangeComplete', stopLoading)
+      router.events.off('routeChangeError', stopLoading)
+    }
+  }, [router])
 
   const handleRedirectFocus = (e) => {
     inputRef.current.focus()
@@ -32,8 +43,7 @@ export default function Login () {
         const email = String(inputRef.current.value)
         const didToken = await magic.auth.loginWithMagicLink({ email: 'test+success@magic.link' })
         if (didToken) {
-          console.log('didToken', didToken)
-          setLoadingMagic(false)
+          router.push('/')
         } else {
           setLoadingMagic(false)
           throw new Error("didToken wasn't return")
@@ -41,7 +51,6 @@ export default function Login () {
       } catch (error) {
         console.error('Error while login with magic Error: ' + error)
       }
-      router.push('/')
     } else {
       console.log('not redirect')
     }
