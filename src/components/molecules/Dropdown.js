@@ -1,11 +1,9 @@
 import styles from '@/styles/Dropdown.module.css'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useState } from 'react'
 
-export default function Dropdown ({ text }) {
+export default function Dropdown ({ text, handleClick }) {
   const [isOpen, setIsOpen] = useState(false)
-
   const openHandler = (e) => {
     setIsOpen(prevState => !prevState)
   }
@@ -19,7 +17,7 @@ export default function Dropdown ({ text }) {
       {isOpen &&
       <ul className={styles.dropdown__options}>
         <li>
-          <Link href='/'>Log Out</Link>
+          <a onClick={handleClick} href='/'>Log Out</a>
         </li>
       </ul>
       }

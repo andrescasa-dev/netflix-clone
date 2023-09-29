@@ -6,6 +6,9 @@ import Header from '@/components/organisms/Header'
 import MoviesSection from '@/components/molecules/MoviesSection'
 import { getVideosBySearch } from '@/lib/getVideosBySearch'
 import { getPopularVideosByLocation } from '@/lib/getPopularVideosByLocation'
+import { useEffect, useState } from 'react'
+import magic from '@/lib/magicClient'
+import { AuthContext } from '@/lib/context'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
@@ -27,6 +30,21 @@ export async function getServerSideProps () {
 
 export default function Home (props) {
   const { horrorVideos, actionVideos, popularVideos } = props
+  const [userName, setUsername] = useState('')
+
+  useEffect(() => {
+    async function getUsername () {
+      try {
+        const { email } = await magic.user.getMetadata()
+        if (email) {
+          setUsername(email)
+        }
+      } catch (error) {
+        console.log('Error retrieving email:', error)
+      }
+    }
+    getUsername()
+  }, [])
 
   return (
     <>
@@ -36,18 +54,20 @@ export default function Home (props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`mainLayout ${robotSlab.className}`}>
-        <Header />
-        <Hero
-          backgroundImgUrl='/clifford.webp'
-          imgUrl='/logo.webp'
-          title={'Clifford the red dog'}
-          subtitle={'A very cute dog'}
-        />
-        <MoviesSection sizeOfCards='big' videos={horrorVideos} subtitle='Horror'/>
-        <MoviesSection sizeOfCards='mid' videos={actionVideos} subtitle='Action'/>
-        <MoviesSection sizeOfCards='small' videos={popularVideos} subtitle='Popular'/>
-      </main>
+      <AuthContext.Provider value={{ userName, setUsername }}>
+        <main className={`mainLayout ${robotSlab.className}`}>
+          <Header />
+          <Hero
+            backgroundImgUrl='/clifford.webp'
+            imgUrl='/logo.webp'
+            title={'Clifford the red dog'}
+            subtitle={'A very cute dog'}
+          />
+          <MoviesSection sizeOfCards='big' videos={horrorVideos} subtitle='Horror'/>
+          <MoviesSection sizeOfCards='mid' videos={actionVideos} subtitle='Action'/>
+          <MoviesSection sizeOfCards='small' videos={popularVideos} subtitle='Popular'/>
+        </main>
+      </AuthContext.Provider>
     </>
   )
 }

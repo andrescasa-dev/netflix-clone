@@ -3,9 +3,10 @@ import Input from '@/components/atoms/Input'
 import Logo from '@/components/atoms/Logo'
 import Head from 'next/head'
 import styles from '@/styles/login.module.css'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import magic from '@/lib/magicClient'
 import { useRouter } from 'next/router'
+import useLoadingRoute from '@/hooks/useLoadingRoute'
 
 /*  TODO
 - [] show the errors catched to de user.
@@ -13,22 +14,10 @@ import { useRouter } from 'next/router'
 */
 
 export default function Login () {
-  const [loadingMagic, setLoadingMagic] = useState(false)
+  const [isLoading, setIsLoading] = useLoadingRoute()
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.com|es$/i
   const inputRef = useRef(null)
   const router = useRouter()
-
-  useEffect(() => {
-    const stopLoading = () => {
-      setLoadingMagic(false)
-    }
-    router.events.on('routeChangeComplete', stopLoading)
-    router.events.on('routeChangeError', stopLoading)
-    return () => {
-      router.events.off('routeChangeComplete', stopLoading)
-      router.events.off('routeChangeError', stopLoading)
-    }
-  }, [router])
 
   const handleRedirectFocus = (e) => {
     inputRef.current.focus()
@@ -39,13 +28,12 @@ export default function Login () {
     const isValidInput = emailRegex.test(inputRef.current.value)
     if (isValidInput) {
       try {
-        setLoadingMagic(true)
-        const email = String(inputRef.current.value)
+        // const email = String(inputRef.current.value)
+        setIsLoading(true)
         const didToken = await magic.auth.loginWithMagicLink({ email: 'test+success@magic.link' })
         if (didToken) {
           router.push('/')
         } else {
-          setLoadingMagic(false)
           throw new Error("didToken wasn't return")
         }
       } catch (error) {
@@ -68,7 +56,7 @@ export default function Login () {
         <div htmlFor='input' onClick={handleRedirectFocus} className={styles['login-form']}>
           <h1 className={styles['login-form__title']} >Sign In</h1>
           <Input regex={emailRegex} inputRef={inputRef} />
-          <Button text={loadingMagic ? 'loading...' : 'Sign In'} isFullWidth={true} handleClick={handleSubmit}/>
+          <Button text={isLoading ? 'loading...' : 'Sign In'} isFullWidth={true} handleClick={handleSubmit}/>
         </div>
       </main>
     </>
