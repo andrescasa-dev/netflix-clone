@@ -37,6 +37,7 @@ export default function Login () {
           throw new Error("didToken wasn't return")
         }
       } catch (error) {
+        setIsLoading(false)
         console.error('Error while login with magic Error: ' + error)
       }
     } else {
