@@ -6,17 +6,17 @@ import { useEffect } from 'react'
 
 export default function App ({ Component, pageProps }) {
   const router = useRouter()
-  const [isLoading] = useLoadingRoute(true)
+  const [isLoading] = useLoadingRoute(false) // change this for true
   useEffect(() => {
-    const showProperView = async () => {
-      const isUserLogin = await magic.user.isLoggedIn()
-      if (isUserLogin) {
-        router.push('/')
-      } else {
-        router.push('/login')
-      }
-    }
-    showProperView()
+    // const showProperView = async () => {
+    //   const isUserLogin = await magic.user.isLoggedIn()
+    //   if (isUserLogin) {
+    //     router.push('/')
+    //   } else {
+    //     router.push('/login')
+    //   }
+    // }
+    // showProperView()
   }, [])
 
   return (

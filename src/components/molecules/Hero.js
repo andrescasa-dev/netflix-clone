@@ -1,12 +1,17 @@
 import Image from 'next/image'
 import Button from '@/components/atoms/Button'
 import styles from '@/styles/Hero.module.css'
+import { useRouter } from 'next/router'
 
-// styles.container => hero
-// styles.contentContainer => hero__container
-// styles.title => hero__title
+/* TODO
+- [] use Context for ctaVideoId?
+*/
 
-export default function Hero ({ title, subtitle, imgUrl, backgroundImgUrl }) {
+export default function Hero ({ title, subtitle, imgUrl, backgroundImgUrl, ctaVideoId }) {
+  const router = useRouter()
+  const handleCTACLick = (e) => {
+    router.push(`/videos/${ctaVideoId}`)
+  }
   return (
     <div className={`${styles.hero} viewport-layout`}>
       <Image
@@ -19,7 +24,7 @@ export default function Hero ({ title, subtitle, imgUrl, backgroundImgUrl }) {
         <Image src={imgUrl} height={90} width={50} alt="Netflix logo" />
         <h1 className={styles.hero__title}>{title}</h1>
         <p>{subtitle}</p>
-        <Button text="Play" hasIcon={true} iconUrl={'/play_icon.svg'}/>
+        <Button text="Play" hasIcon={true} iconUrl={'/play_icon.svg'} handleClick={handleCTACLick}/>
       </div>
     </div>
   )

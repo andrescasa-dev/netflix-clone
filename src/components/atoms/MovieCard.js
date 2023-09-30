@@ -1,5 +1,6 @@
 import styles from '@/styles/MovieCard.module.css'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 
 export default function MovieCard ({ size = 'mid', imgUrl = '', alt, id }) {
@@ -20,13 +21,15 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt, id }) {
 
   return (
     <article className={`${styles.card} ${sizeMap[`${size}`]} ${hoverEffect}`}>
+      <Link href={`/videos/${id}`}>
         <Image
-          fill={true}
-          objectFit='cover'
-          src={finalImgUrl}
-          alt={alt}
-          onError={handleError}
-        />
+            fill={true}
+            objectFit='cover'
+            src={finalImgUrl}
+            alt={alt}
+            onError={handleError}
+          />
+      </Link>
     </article>
   )
 }

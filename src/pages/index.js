@@ -62,6 +62,7 @@ export default function Home (props) {
             imgUrl='/logo.webp'
             title={'Clifford the red dog'}
             subtitle={'A very cute dog'}
+            ctaVideoId={'ma67yOdMQfs'}
           />
           <MoviesSection sizeOfCards='big' videos={horrorVideos} subtitle='Horror'/>
           <MoviesSection sizeOfCards='mid' videos={actionVideos} subtitle='Action'/>

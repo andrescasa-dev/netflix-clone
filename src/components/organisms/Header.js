@@ -10,7 +10,6 @@ import { useRouter } from 'next/router'
 export default function Header () {
   const auth = useContext(AuthContext)
   const router = useRouter()
-  // await magic.user.isLoggedIn()
   const handleMagicLogOut = async (e) => {
     try {
       e.preventDefault()
@@ -29,7 +28,7 @@ export default function Header () {
         <NavLink text='Home' href='/'/>
         <NavLink text='My List' href='/my-list'/>
         <div className={styles.header__dropdown}>
-           <Dropdown text={auth.userName} handleClick={handleMagicLogOut} />
+           <Dropdown text={auth?.userName} handleClick={handleMagicLogOut} />
         </div>
       </div>
     </header>
