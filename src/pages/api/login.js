@@ -5,7 +5,7 @@ import { setAuthCookie } from '@/lib/setAuthCookie'
 import jwt from 'jsonwebtoken'
 
 export default async function login (req, res) {
-  if (req.method === 'GET') {
+  if (req.method === 'POST') {
     try {
       // access user data
       const didToken = req.headers.authorization.slice(7)
@@ -30,18 +30,18 @@ export default async function login (req, res) {
       const isUserInDB = usersMatch.length > 0
 
       if (isUserInDB) {
-        // just return de user
+        // just save the user
         setAuthCookie(userJwt, res) // pass a cookie for de JWT of the logged user
-        return res.status(200).json({ done: true, usersMatch, message: 'user already exist' })
       } else {
-        // create and return the user
+        // create and save the user
         setAuthCookie(userJwt, res) // pass a cookie for de JWT of the logged user
-        const { insert_users: insertedUser } = await createUser(metadata, userJwt)
-        return res.status(200).json({ done: true, insertedUser, message: 'user did not exist, it was inserted' })
+        await createUser(metadata, userJwt)
       }
+
+      return res.status(200).json({ couldLogin: true })
     } catch (error) {
       console.error(`Something went wrong in login api: ${error.message} data: ${JSON.stringify(error.data)}`)
-      return res.status(500).json({ error: "login doesn't works" })
+      return res.status(500).json({ couldLogin: false, error: "login doesn't works" })
     }
   } else {
     console.error('method not allowed')

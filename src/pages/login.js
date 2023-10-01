@@ -28,11 +28,23 @@ export default function Login () {
     const isValidInput = emailRegex.test(inputRef.current.value)
     if (isValidInput) {
       try {
-        // const email = String(inputRef.current.value)
+        const email = String(inputRef.current.value)
         setIsLoading(true)
-        const didToken = await magic.auth.loginWithMagicLink({ email: 'test+success@magic.link' })
+        const didToken = await magic.auth.loginWithMagicLink({ email })
         if (didToken) {
-          router.push('/')
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${didToken}`,
+              'Content-Type': 'application/json'
+            }
+          })
+          const { couldLogin } = await response.json()
+          if (couldLogin) {
+            router.push('/')
+          } else {
+            setIsLoading(false)
+          }
         } else {
           throw new Error("didToken wasn't return")
         }
@@ -43,7 +55,6 @@ export default function Login () {
     } else {
       console.log('not redirect')
     }
-    // si es correcto el email redirect to home
   }
   return (
     <>
