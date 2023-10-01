@@ -9,6 +9,7 @@ import { getPopularVideosByLocation } from '@/lib/getPopularVideosByLocation'
 import { useEffect, useState } from 'react'
 import magic from '@/lib/magicClient'
 import { AuthContext } from '@/lib/context'
+import startFetchMyQuery from '@/lib/database/hasura'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
@@ -45,6 +46,8 @@ export default function Home (props) {
     }
     getUsername()
   }, [])
+
+  startFetchMyQuery()
 
   return (
     <>
