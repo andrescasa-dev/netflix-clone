@@ -47,7 +47,7 @@ export default function Home (props) {
     getUsername()
   }, [])
 
-  startFetchMyQuery()
+  // startFetchMyQuery()
 
   return (
     <>
