@@ -6,7 +6,7 @@ import Header from '@/components/organisms/Header'
 import LikeMenu from '@/components/molecules/LikeMenu'
 
 export async function getStaticProps (context) {
-  // como le entraga la data al componente
+  // como le entrega la data al componente
   const { id } = context.params
   const video = await getVideosById(id)
   return {

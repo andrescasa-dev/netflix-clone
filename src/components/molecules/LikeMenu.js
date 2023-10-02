@@ -1,25 +1,59 @@
 import styles from '@/styles/LikeMenu.module.css'
 import LikeButton from '../atoms/LikeButton'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
-// change the dislike and like logic, children should be independent
+/* Todo
+-[ ] change the dislike and like logic, children should be independent
+-[ ] make the call to the DB in the page componente
+*/
 export default function LikeMenu () {
   // should recibe the initial props of the like video
   // para ello cada que se carge un video modal se tiene que ver si está en la DB
   const [toggleLike, setToggleLike] = useState(false)
   const [toggleDisLike, setToggleDisLike] = useState(false)
 
+  const router = useRouter()
+  const { id: videoId } = router.query
+
   const handleToggleLike = async () => {
     setToggleLike(!toggleLike)
     setToggleDisLike(toggleLike)
-    // mutate user_video
-    // use fetch with using AuthCookie
+
+    fetch('/api/userVideoData', {
+      method: 'POST',
+      body: JSON.stringify({
+        hasWatched: false,
+        videoId,
+        likedStatus: 1
+      })
+    })
   }
 
   const handleToggleDislike = async () => {
     setToggleDisLike(!toggleDisLike)
     setToggleLike(toggleDisLike)
+
+    fetch('/api/userVideoData', {
+      method: 'POST',
+      body: JSON.stringify({
+        hasWatched: false,
+        videoId,
+        likedStatus: 2
+      })
+    })
   }
+
+  useEffect(() => {
+    async function fetchVideoData () {
+      const response = await fetch(`/api/userVideoData?videoId=${videoId}`)
+      const { userVideoData } = await response.json()
+      const { likedStatus } = userVideoData
+      if (likedStatus === 1) { setToggleLike(true) }
+      if (likedStatus === 2) { setToggleDisLike(true) }
+    }
+    fetchVideoData()
+  }, [])
 
   return (
     <div className={styles['like-menu']}>

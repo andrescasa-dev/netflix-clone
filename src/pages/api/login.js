@@ -23,7 +23,7 @@ export default async function login (req, res) {
             'x-hasura-user-id': `${metadata.issuer}`
           }
         },
-        'abcdef1234567890abcdef1234567890'
+        process.env.JWT_SECRET_KEY
       )
       // maker a GQL query to DB to fetch the user i: need user id
       const { users: usersMatch } = await getUsersByIssuer(metadata.issuer, userJwt)
