@@ -7,43 +7,42 @@ import jwt from 'jsonwebtoken'
 // need videoId
 // user_video table must have a compuse PK with user_id and video_id, for not duplicated video data for the same user.
 export default async function userVideoData (req, res) {
-  const authToken = req.cookies.token
   try {
+    const authToken = req.cookies.token
+    // verify if the token is from ours
+    const authDecode = jwt.verify(authToken, process.env.JWT_SECRET_KEY)
     // if user is not login
     if (!authToken) { res.status(403).send({ }) }
 
+    // needed data
+    const { issuer } = authDecode
+    const body = req.method === 'POST' && JSON.parse(req.body)
+    const videoId = body ? body.videoId : req.query.videoId
+    const { user_videos: userVideoDataArray } = await getVideoDataByUser({ issuer, videoId }, authToken)
+
     if (req.method === 'POST') {
-      const body = JSON.parse(req.body)
-      const { videoId, hasWatched, likedStatus } = body
+      const { hasWatched, likedStatus } = body
       checkRequiredVariables(['videoId', 'hasWatched', 'likedStatus'], body, 'while getting http post userVideoData petition')
-
-      // verify if the token is ours
-      const authDecode = jwt.verify(authToken, process.env.JWT_SECRET_KEY)
-      const { issuer } = authDecode
-
-      // is there data user video in DB ?
-      const { user_videos: userVideoDataArray } = await getVideoDataByUser({ issuer, videoId }, authToken)
 
       // if there is not in the DB create userVideoData
       if (userVideoDataArray.length === 0) {
+        // create
         const response = await createUserVideoData({ hasWatched, likedStatus, userId: issuer, videoId }, authToken)
         res.status(200).send({ done: true, data: response })
       }
 
+      // update
       const response = await updateVideoData({ likedStatus, hasWatched, videoId, userId: issuer }, authToken)
       res.status(200).send({ done: true, data: response })
     }
+
     if (req.method === 'GET') {
-      const { videoId } = req.query
       checkRequiredVariables(['videoId'], req.query, 'while getting http get userVideoData petition')
-      // verify if the token is ours
-      const authDecode = jwt.verify(authToken, process.env.JWT_SECRET_KEY)
-      const { issuer } = authDecode
 
-      // get data from DB
-      const { user_videos: userVideoDataArray } = await getVideoDataByUser({ issuer, videoId }, authToken)
-
+      // not found
       if (userVideoDataArray.length === 0) res.status(404).send({ done: true, userVideoData: userVideoDataArray })
+
+      // found
       res.status(200).send({ done: true, userVideoData: userVideoDataArray[0] })
     }
   } catch (error) {
