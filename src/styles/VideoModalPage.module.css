@@ -5,7 +5,6 @@
   bottom: 0;
 }
 
-
 .borderBoxShadow {
   -webkit-box-shadow: 0 3px 7px var(--shadow20);
   -moz-box-shadow: 0 3px 7px var(--shadow20);
@@ -23,15 +22,19 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-areas:
-    "videoPlayer videoPlayer videoPlayer"
+    "video video video"
     "about about more-info";
 }
 
-.videoPlayer {
-  border-radius: 10px 10px 10px 10px;
+.video {
   background-color: red;
-  grid-area: videoPlayer;
+  grid-area: video;
 }
+
+.video__player {
+  border-radius: 10px 10px 10px 10px;
+}
+
 
 .about {
   background-color: blue;

@@ -3,6 +3,7 @@ import ReactModal from 'react-modal'
 import styles from '@/styles/VideoModalPage.module.css'
 import { getVideosById } from '@/lib/getVideosById'
 import Header from '@/components/organisms/Header'
+import LikeMenu from '@/components/molecules/LikeMenu'
 
 export async function getStaticProps (context) {
   // como le entraga la data al componente
@@ -30,7 +31,6 @@ export async function getStaticPaths () {
 export default function VideoModalPage ({ video }) {
   const router = useRouter()
   const { id } = router.query
-  console.log('video', video)
 
   const { title, description, publishDate, viewCount, channelTitle } = video
   return (
@@ -43,15 +43,18 @@ export default function VideoModalPage ({ video }) {
         overlayClassName={styles.overlay}
       >
         <div className={styles['video-modal']}>
-          <iframe
-            id="ytplayer"
-            type="text/html"
-            width="100%" // 640
-            height="360"
-            className={`${styles.videoPlayer} ${styles.borderBoxShadow}`}
-            src={`https://www.youtube.com/embed/${id}?autoplay=0&origin=http://example.com&controls=0`}
-            frameBorder="0">
-          </iframe>
+          <div className={styles.video}>
+            <iframe
+              id="ytplayer"
+              type="text/html"
+              width="100%" // 640
+              height="360"
+              className={`${styles.video__player} ${styles.borderBoxShadow}`}
+              src={`https://www.youtube.com/embed/${id}?autoplay=0&origin=http://example.com&controls=0`}
+              frameBorder="0">
+            </iframe>
+            <LikeMenu />
+          </div>
           <div className={styles.about}>
             <p>{publishDate}</p>
             <h1>{title}</h1>
