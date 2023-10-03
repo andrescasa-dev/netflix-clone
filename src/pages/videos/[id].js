@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router'
 import ReactModal from 'react-modal'
 import styles from '@/styles/VideoModalPage.module.css'
-import { getVideosById } from '@/lib/getVideosById'
 import Header from '@/components/organisms/Header'
 import LikeMenu from '@/components/molecules/LikeMenu'
+import { getVideoDetailExample } from '@/lib/videoExample'
 
 export async function getStaticProps (context) {
   // como le entrega la data al componente
   const { id } = context.params
-  const video = await getVideosById(id)
+  const video = getVideoDetailExample()
   return {
     props: {
       video: video ?? {}

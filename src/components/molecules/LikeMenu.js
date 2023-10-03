@@ -46,11 +46,15 @@ export default function LikeMenu () {
 
   useEffect(() => {
     async function fetchVideoData () {
-      const response = await fetch(`/api/userVideoData?videoId=${videoId}`)
-      const { userVideoData } = await response.json()
-      const { likedStatus } = userVideoData
-      if (likedStatus === 1) { setToggleLike(true) }
-      if (likedStatus === 2) { setToggleDisLike(true) }
+      try {
+        const response = await fetch(`/api/userVideoData?videoId=${videoId}`)
+        const { userVideoData } = await response.json()
+        const { likedStatus } = userVideoData
+        if (likedStatus === 1) { setToggleLike(true) }
+        if (likedStatus === 2) { setToggleDisLike(true) }
+      } catch (error) {
+        console.error(`filed to fetch user data. Error: ${error.message}`)
+      }
     }
     fetchVideoData()
   }, [])

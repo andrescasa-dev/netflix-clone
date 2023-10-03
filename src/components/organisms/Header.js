@@ -26,7 +26,7 @@ export default function Header () {
       <div className={styles.header__content}>
         <Logo />
         <NavLink text='Home' href='/'/>
-        <NavLink text='My List' href='/my-list'/>
+        <NavLink text='My List' href='/browse/my-list'/>
         <div className={styles.header__dropdown}>
            <Dropdown text={auth?.userName} handleClick={handleMagicLogOut} />
         </div>

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
-export default function MovieCard ({ size = 'mid', imgUrl = '', alt, id }) {
+export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not found', id }) {
   const [finalImgUrl, setFinalImgUrl] = useState(imgUrl)
 
   const sizeMap = {

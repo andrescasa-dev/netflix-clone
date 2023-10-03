@@ -9,28 +9,39 @@ import { getPopularVideosByLocation } from '@/lib/getPopularVideosByLocation'
 import { useEffect, useState } from 'react'
 import magic from '@/lib/magicClient'
 import { AuthContext } from '@/lib/context'
-import startFetchMyQuery from '@/lib/database/hasura'
+import getWatchedVideosByUser from '@/lib/database/getWatchedVideosByUser'
+import { getVideosByIdArray } from '@/lib/getVideosById'
+import redirectIfNotAuth from '@/lib/ssr/useVerifyUser'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
-export async function getServerSideProps () {
+export async function getServerSideProps (context) {
   try {
     // calling YouTube API
     const actionVideos = await getVideosBySearch('action')
     const horrorVideos = await getVideosBySearch('horror')
     const popularVideos = await getPopularVideosByLocation(['21.5922529', '-158.1147114'])
 
+    // handling no authUsers
+    const { userId, userJWT, redirectResponse } = redirectIfNotAuth(context)
+    if (redirectResponse) { return redirectResponse }
+
+    // get the user videos from my DB
+    const watchedVideosIdArray = await getWatchedVideosByUser({ userId }, userJWT)
+    // get the videos from YT
+    const watchedVideos = getVideosByIdArray(watchedVideosIdArray) 
+
     // send data via props to the client side component
-    return { props: { actionVideos, horrorVideos, popularVideos } }
+    return { props: { actionVideos, horrorVideos, popularVideos, watchedVideos } }
   } catch (error) {
-    console.error('error in SSR MovieSection')
+    console.error('error in SSR home')
     console.error(error)
     return { props: { videosData: [] } }
   }
 }
 
 export default function Home (props) {
-  const { horrorVideos, actionVideos, popularVideos } = props
+  const { horrorVideos, actionVideos, popularVideos, watchedVideos } = props
   const [userName, setUsername] = useState('')
 
   useEffect(() => {
@@ -68,6 +79,7 @@ export default function Home (props) {
             ctaVideoId={'ma67yOdMQfs'}
           />
           <MoviesSection sizeOfCards='big' videos={horrorVideos} subtitle='Horror'/>
+          {watchedVideos?.length > 0 && <MoviesSection sizeOfCards='mid' videos={watchedVideos} subtitle='Recent watched'/>}
           <MoviesSection sizeOfCards='mid' videos={actionVideos} subtitle='Action'/>
           <MoviesSection sizeOfCards='small' videos={popularVideos} subtitle='Popular'/>
         </main>

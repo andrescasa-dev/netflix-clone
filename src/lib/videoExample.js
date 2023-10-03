@@ -1,6 +1,6 @@
 import videoDetail from '../../data/videoDetail'
 
-export const videoExample = () => {
+export const getVideoDetailExample = () => {
   const snippet = videoDetail.items[0].snippet
   const id = videoDetail.items[0].id?.videoId || videoDetail.items[0].id
   return {

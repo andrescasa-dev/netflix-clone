@@ -20,7 +20,12 @@
 
 .movies-section__cards-container {
   display: flex;
+  justify-content: center;
   gap: .2em;
   width: fit-content;
   padding-block: 2em;
+}
+
+.movies-section__cards-container--wrap {
+  flex-wrap: wrap;
 }
