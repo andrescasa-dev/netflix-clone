@@ -1,23 +1,27 @@
 import Logo from '@/components/atoms/Logo'
 import NavLink from '@/components/atoms/NavLink'
 import Dropdown from '@/components/molecules/Dropdown'
-import { AuthContext } from '@/lib/context'
 import styles from '@/styles/Header.module.css'
-import { useContext } from 'react'
-import magic from '@/lib/magicClient'
 import { useRouter } from 'next/router'
+import { useGlobalStore } from '@/stores/GlobalStore'
 
 export default function Header () {
-  const auth = useContext(AuthContext)
+  const { globalStore, dispatchGlobalStore } = useGlobalStore()
+  console.log('globalStore in header', globalStore)
   const router = useRouter()
   const handleMagicLogOut = async (e) => {
+    e.preventDefault()
     try {
-      e.preventDefault()
-      await magic.user.logout()
-      auth.setUsername(undefined)
+      const response = await fetch('/api/logout')
+      const res = await response.json()
+      console.log('res: ', res)
+      dispatchGlobalStore({
+        type: 'update_username',
+        payload: { username: '' }
+      })
+    } catch (error) {
+      console.error('Error logging out', error)
       router.push('/login')
-    } catch {
-      console.error("couldn't log out from magic")
     }
   }
 
@@ -28,7 +32,7 @@ export default function Header () {
         <NavLink text='Home' href='/'/>
         <NavLink text='My List' href='/browse/my-list'/>
         <div className={styles.header__dropdown}>
-           <Dropdown text={auth?.userName} handleClick={handleMagicLogOut} />
+           <Dropdown text={globalStore?.username } handleClick={handleMagicLogOut} />
         </div>
       </div>
     </header>

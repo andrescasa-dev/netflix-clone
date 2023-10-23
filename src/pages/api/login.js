@@ -8,6 +8,7 @@ export default async function login (req, res) {
   if (req.method === 'POST') {
     try {
       // access user data
+      if (!req.headers.authorization) { return res.status(403).json({ couldLogin: false, error: 'add auth token in header' }) }
       const didToken = req.headers.authorization.slice(7)
       // unpack data from didToken
       const metadata = await magicAdmin.users.getMetadataByToken(didToken)

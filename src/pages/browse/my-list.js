@@ -2,7 +2,7 @@ import MoviesSection from '@/components/molecules/MoviesSection'
 import Header from '@/components/organisms/Header'
 import getLikedVideosByUser from '@/lib/database/getLikedVideosByUser'
 import { getVideosByIdArray } from '@/lib/getVideosById'
-import redirectLoginIfNotAuth from '@/lib/ssr/useVerifyUser'
+import redirectLoginIfNotAuth from '@/lib/ssr/redirectLoginIfNotAuth'
 import Head from 'next/head'
 
 // render liked videos

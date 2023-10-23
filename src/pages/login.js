@@ -7,6 +7,7 @@ import { useRef } from 'react'
 import magic from '@/lib/magicClient'
 import { useRouter } from 'next/router'
 import useLoadingRoute from '@/hooks/useLoadingRoute'
+import { useGlobalStore } from '@/stores/GlobalStore'
 
 /*  TODO
 - [] show the errors catched to de user.
@@ -15,6 +16,7 @@ import useLoadingRoute from '@/hooks/useLoadingRoute'
 
 export default function Login () {
   const [isLoading, setIsLoading] = useLoadingRoute()
+  const { globalStore, dispatchGlobalStore } = useGlobalStore()
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.com|es$/i
   const inputRef = useRef(null)
   const router = useRouter()
@@ -41,6 +43,13 @@ export default function Login () {
           })
           const { couldLogin } = await response.json()
           if (couldLogin) {
+            await dispatchGlobalStore({
+              type: 'update_username',
+              payload: {
+                username: email
+              }
+            })
+            console.log('globalStore after dispatch in login', globalStore)
             router.push('/')
           } else {
             setIsLoading(false)
