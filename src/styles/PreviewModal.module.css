@@ -1,0 +1,34 @@
+.modal {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 30vw;
+  color: white;
+}
+
+.modal__info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modal__stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+}
+
+.modal__stats__buttons {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.modal__stats__views {
+  display: flex;
+  padding: 0.6rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+}

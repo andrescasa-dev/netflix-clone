@@ -192,3 +192,8 @@ body {
 ::-webkit-scrollbar {
   background: transparent;
 }
+
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
+}

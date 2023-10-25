@@ -1,0 +1,9 @@
+.tag {
+  width: fit-content;
+  display: flex;
+  padding: 0.2rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.25rem;
+  border: 1px solid #CBCBCB;
+}

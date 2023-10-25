@@ -39,7 +39,6 @@ export async function getServerSideProps (context) {
 
 export default function Home (props) {
   const { horrorVideos, actionVideos, popularVideos, watchedVideos } = props
-
   return (
     <>
       <Head>
