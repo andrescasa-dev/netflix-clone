@@ -2,17 +2,17 @@
   padding: 0;
   background-color: black;
   padding: 3rem 4rem;
-  position: fixed;  
+  position: fixed;
   border: 0px;
   border-radius: .4rem;
 }
 
 .modal__close_btn_container {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
-.modal--background-image{
+.modal--background-image {
   position: absolute;
   inset: 0;
   opacity: 35%;

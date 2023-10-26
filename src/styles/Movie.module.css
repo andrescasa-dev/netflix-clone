@@ -1,0 +1,46 @@
+.movie__video {
+  height: 100vh;
+}
+
+.panel {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4rem 8%;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%);
+  z-index: 0;
+}
+
+.panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel__menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.panel__controllers {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.panel__controllers__video-bar {
+  height: 0.4rem;
+  background-color: gray;
+  flex-grow: 1;
+  border-radius: 8px;
+}
+
+.panel__interaction-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.4rem;
+}

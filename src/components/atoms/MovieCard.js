@@ -29,7 +29,7 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
   return (
     <article className={`${styles.card} ${sizeMap[`${size}`]} ${hoverEffect}`} >
       <Modal showModal={showModal} setIsOpenModal={setIsOpenModal}>
-          <PreviewModal />
+          <PreviewModal movie={{ id }} />
       </Modal>
       <div onClick={handleClick}>
         <Image

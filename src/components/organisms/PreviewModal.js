@@ -3,13 +3,9 @@ import Tag from '../atoms/Tag'
 import Text from '../atoms/Text'
 import Button from '../atoms/Button'
 import Icon from '../atoms/Icon'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 
-export default function PreviewModal () {
-  const router = useRouter()
-  const handleOkClick = (e) => {
-    router.push('/movies/1')
-  }
+export default function PreviewModal ({ movie }) {
   return (
     <article className={styles.modal}>
       <Text type='title' content={'My title'} />
@@ -36,13 +32,14 @@ export default function PreviewModal () {
           <Text type='normal' content={'20k'} />
         </div>
       </div>
-      <Button
-        text={'Play'}
-        hasIcon={true}
-        iconUrl={'/play_icon.svg'}
-        isFullWidth={true}
-        handleClick={handleOkClick}
-      />
+      <Link href={`/movies/${movie.id}`}>
+        <Button
+          text={'Play'}
+          hasIcon={true}
+          iconUrl={'/play_icon.svg'}
+          isFullWidth={true}
+        />
+      </Link>
     </article>
   )
 }
