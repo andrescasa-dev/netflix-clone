@@ -1,3 +1,7 @@
+.movie {
+  overflow: hidden;
+}
+
 .movie__video {
   height: 100vh;
 }
@@ -32,10 +36,7 @@
 }
 
 .panel__controllers__video-bar {
-  height: 0.4rem;
-  background-color: gray;
   flex-grow: 1;
-  border-radius: 8px;
 }
 
 .panel__interaction-buttons {
