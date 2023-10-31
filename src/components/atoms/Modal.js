@@ -39,12 +39,12 @@ export default function Modal ({ showModal, setIsOpenModal, children, background
 
   return (
     <dialog ref={modal} className={`${styles.modal} ${backgroundClass}`} onKeyDown={handlePressKeyClose}>
-      <button className={styles['modal--background-image']}>
+      <div className={styles['modal--background-image']}>
         <Image
           src='/clifford.webp' fill={true} objectFit='cover'
           alt='background image'
         />
-      </button>
+      </div>
       <div className={styles.modal__close_btn_container} onClick={handleClose}>
         <Icon url={'/exit.svg'} alt='views' />
       </div>

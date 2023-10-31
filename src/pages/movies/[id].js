@@ -7,12 +7,16 @@ import PlayButton from '@/components/atoms/PlayButton'
 import ReactPlayer from 'react-player'
 import { useEffect, useRef, useState } from 'react'
 import Slider from '@/components/atoms/Slider'
+import { useRouter } from 'next/router'
 
 export default function MoviePage () {
   const playerRef = useRef(null)
   const [isClient, setIsClient] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentRange, setCurrentRange] = useState(0) // range 0-100, where 1000 is 100% complete video
+  const router = useRouter()
+  const videoId = router.query.id
+  const title = decodeURI(router.query.title)
 
   const handleToggleIsPlaying = (e) => {
     setIsPlaying((prev) => !prev)
@@ -64,7 +68,7 @@ export default function MoviePage () {
         {isClient &&
         <div className={styles.movie__video} >
           <ReactPlayer
-            url={'https://www.youtube.com/watch?v=P7jA9S-Qbpk'}
+            url={`https://www.youtube.com/watch?v=${videoId}`}
             playing={isPlaying}
             height={'100%'}
             width={'100%'}
@@ -78,9 +82,8 @@ export default function MoviePage () {
         <div className={styles.panel}>
           <div className={styles.panel__header}>
             <Icon url={'/arrow.svg'} alt={'go back'} />
-            <Text content={'Tierra de nadie'} type={'relevant'} />
+            <Text content={title} type={'relevant'} />
           </div>
-          <Text content={'Tierra de nadie'} type={'title'} />
           <div className={styles.panel__menu}>
             <div className={styles.panel__controllers}>
               <PlayButton onClick={handleToggleIsPlaying} />
