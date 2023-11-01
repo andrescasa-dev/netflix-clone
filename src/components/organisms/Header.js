@@ -4,6 +4,7 @@ import Dropdown from '@/components/molecules/Dropdown'
 import styles from '@/styles/Header.module.css'
 import { useRouter } from 'next/router'
 import { useGlobalStore } from '@/stores/GlobalStore'
+import Link from 'next/link'
 
 export default function Header () {
   const { globalStore, dispatchGlobalStore } = useGlobalStore()
@@ -32,7 +33,12 @@ export default function Header () {
         <NavLink text='Home' href='/'/>
         <NavLink text='My List' href='/browse/my-list'/>
         <div className={styles.header__dropdown}>
-           <Dropdown text={globalStore?.username } handleClick={handleMagicLogOut} />
+           {globalStore.isLoading
+             ? 'loading...'
+             : !globalStore.username
+                 ? <Link href={'/login'}>Login</Link>
+                 : <Dropdown text={globalStore.username } handleClick={handleMagicLogOut} />
+           }
         </div>
       </div>
     </header>

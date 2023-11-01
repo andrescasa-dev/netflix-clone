@@ -1,4 +1,5 @@
 import checkRequiredVariables from '../checkRequiredVaraibles'
+import { getVideosByIdArray } from '../getVideosById'
 import fetchGraphQL from './hasura'
 
 const operationsDoc = `
@@ -19,5 +20,5 @@ export default async function getWatchedVideosByUser (variables, userJwt) {
     throw new Error('Error while executing GQL petition')
   }
 
-  return data.user_videos
+  return getVideosByIdArray(data.user_videos)
 }

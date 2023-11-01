@@ -7,28 +7,23 @@ import MoviesSection from '@/components/molecules/MoviesSection'
 import { getVideosBySearch } from '@/lib/getVideosBySearch'
 import { getPopularVideosByLocation } from '@/lib/getPopularVideosByLocation'
 import getWatchedVideosByUser from '@/lib/database/getWatchedVideosByUser'
-import { getVideosByIdArray } from '@/lib/getVideosById'
 import redirectIfNotAuth from '@/lib/ssr/redirectLoginIfNotAuth'
+import useLoadMagicUserAuth from '@/hooks/useLoadMagicUserAuth'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
 export async function getServerSideProps (context) {
   try {
-    // calling YouTube API
     const actionVideos = await getVideosBySearch('action')
     const horrorVideos = await getVideosBySearch('horror')
     const popularVideos = await getPopularVideosByLocation(['21.5922529', '-158.1147114'])
 
     // handling no authUsers
     const { userId, userJWT, redirectResponse } = redirectIfNotAuth(context)
-    if (redirectResponse) { return redirectResponse }
+    // if (redirectResponse) { return redirectResponse }
 
-    // get the user videos from my DB
-    const watchedVideosIdArray = await getWatchedVideosByUser({ userId }, userJWT)
-    // get the videos from YT
-    const watchedVideos = getVideosByIdArray(watchedVideosIdArray)
+    const watchedVideos = userId ? await getWatchedVideosByUser({ userId }, userJWT) : []
 
-    // send data via props to the client side component
     return { props: { actionVideos, horrorVideos, popularVideos, watchedVideos } }
   } catch (error) {
     console.error('error in SSR home')
@@ -38,6 +33,7 @@ export async function getServerSideProps (context) {
 }
 
 export default function Home (props) {
+  useLoadMagicUserAuth()
   const { horrorVideos, actionVideos, popularVideos, watchedVideos } = props
   return (
     <>

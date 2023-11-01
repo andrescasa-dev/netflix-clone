@@ -5,7 +5,6 @@ const { createContext, useReducer, useContext } = require('react')
 const GlobalContext = createContext(null)
 
 export default function GlobalStore ({ children, initialStore }) {
-  console.log('creating global store...')
   const [globalStore, dispatchGlobalStore] = useReducer(globalStoreReducer, initialStore)
   return (
     <GlobalContext.Provider value={{ globalStore, dispatchGlobalStore }}>

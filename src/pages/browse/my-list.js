@@ -1,7 +1,7 @@
 import MoviesSection from '@/components/molecules/MoviesSection'
 import Header from '@/components/organisms/Header'
+import useLoadMagicUserAuth from '@/hooks/useLoadMagicUserAuth'
 import getLikedVideosByUser from '@/lib/database/getLikedVideosByUser'
-import { getVideosByIdArray } from '@/lib/getVideosById'
 import redirectLoginIfNotAuth from '@/lib/ssr/redirectLoginIfNotAuth'
 import Head from 'next/head'
 
@@ -12,12 +12,10 @@ export async function getServerSideProps (context) {
   try {
     // validate User
     const { userId, userJWT, redirectResponse } = redirectLoginIfNotAuth(context)
-    if (redirectResponse) { return redirectResponse }
+    // if (redirectResponse) { return redirectResponse }
 
     // read data
-    console.log('reading user liked videos')
-    const likedVideosIdArray = await getLikedVideosByUser({ userId }, userJWT)
-    const likedVideos = getVideosByIdArray(likedVideosIdArray)
+    const likedVideos = userId ? await getLikedVideosByUser({ userId }, userJWT) : []
 
     return { props: { likedVideos } }
   } catch (error) {
@@ -27,7 +25,8 @@ export async function getServerSideProps (context) {
 }
 
 export default function MyList ({ likedVideos }) {
-  console.log(likedVideos)
+  useLoadMagicUserAuth()
+
   return (
     <>
     <Head>
@@ -35,7 +34,10 @@ export default function MyList ({ likedVideos }) {
     </Head>
     <main className={'mainLayout '}>
       <Header />
-      <MoviesSection isWrap={true} videos={likedVideos} sizeOfCards='big' subtitle='My List' />
+      {likedVideos.length > 0
+        ? <MoviesSection isWrap={true} videos={likedVideos} sizeOfCards='big' subtitle='My List' />
+        : <p>please login</p>
+      }
     </main>
     </>
   )
