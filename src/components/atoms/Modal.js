@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import Icon from './Icon'
 import Image from 'next/image'
 
-export default function Modal ({ showModal, setIsOpenModal, children, backgroundUrl }) {
+export default function Modal ({ showModal, setIsOpenModal, children, backgroundUrl, imgUrl }) {
   const modal = useRef(null)
 
   useEffect(() => {
@@ -41,12 +41,14 @@ export default function Modal ({ showModal, setIsOpenModal, children, background
     <dialog ref={modal} className={`${styles.modal} ${backgroundClass}`} onKeyDown={handlePressKeyClose}>
       <div className={styles['modal--background-image']}>
         <Image
-          src='/clifford.webp' fill={true} objectFit='cover'
+          src='/signin-bg.jpeg' fill={true} objectFit='cover'
           alt='background image'
         />
       </div>
-      <div className={styles.modal__close_btn_container} onClick={handleClose}>
-        <Icon url={'/exit.svg'} alt='views' />
+      <div className={styles.modal__close_btn_container}>
+        <button onClick={handleClose}>
+          <Icon url={'/exit.svg'} alt='views' />
+        </button>
       </div>
       {children}
     </dialog>

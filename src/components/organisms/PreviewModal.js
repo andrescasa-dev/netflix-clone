@@ -6,7 +6,7 @@ import Icon from '../atoms/Icon'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { getVideoDetailExample } from '@/lib/videoExample'
-
+import LikeButtons from '../molecules/LikeButtons'
 /*
 TODO
 -[ ] too large title => make this smaller
@@ -47,11 +47,6 @@ export default function PreviewModal ({ movieId }) {
       </div>
       <Text type='relevant' content={shortenText(movie?.description)} />
       <div className={styles.modal__stats}>
-        <div className={styles.modal__stats__buttons}>
-            {/* to do: make this a component icon */}
-            <Icon url={'/like.svg'} alt='like' />
-            <Icon url={'/like.svg'} alt='dislike' isUpsideDown={true}/>
-        </div>
         <div className={styles.modal__stats__views}>
           {/* to do: make this a component icon */}
           <Icon url={'/eye.svg'} alt='views' />

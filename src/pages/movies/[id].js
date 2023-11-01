@@ -8,6 +8,9 @@ import ReactPlayer from 'react-player'
 import { useEffect, useRef, useState } from 'react'
 import Slider from '@/components/atoms/Slider'
 import { useRouter } from 'next/router'
+import LikeButtons from '@/components/molecules/LikeButtons'
+import ShareButton from '@/components/atoms/ShareButton'
+import Link from 'next/link'
 
 /* todo
 
@@ -15,7 +18,7 @@ import { useRouter } from 'next/router'
 */
 
 export default function MoviePage () {
-  let timer
+  const timer = useRef(null)
   const playerRef = useRef(null)
   const panelRef = useRef(null)
   const [isClient, setIsClient] = useState(false)
@@ -25,6 +28,12 @@ export default function MoviePage () {
   const videoId = router.query.id
   const title = decodeURI(router.query.title)
   const [volume, setVolume] = useState(50)
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer.current)
+    }
+  }, [])
 
   const handleSetVolume = (e) => {
     setVolume(e.target.value / 100)
@@ -43,12 +52,11 @@ export default function MoviePage () {
   }
 
   const handleOnMove = (e) => {
-    clearTimeout(timer)
+    if (timer.current) clearTimeout(timer.current)
     showPanel()
-    timer = setTimeout(() => {
-      console.log('hidding')
+    timer.current = setTimeout(() => {
       hidePanel()
-    }, 6000)
+    }, 1300)
   }
 
   const handleToggleIsPlaying = (e) => {
@@ -100,28 +108,30 @@ export default function MoviePage () {
 
         <div className={styles.panel} ref={panelRef} onMouseMove={handleOnMove}>
           <div className={styles.panel__header}>
-            <Icon url={'/arrow.svg'} alt={'go back'} />
+            <Link href={'/'} scroll={false} replace>
+              <Icon url={'/arrow.svg'} alt={'go back'} />
+            </Link>
             <Text content={title} type={'relevant'} />
           </div>
           <div className={styles['panel__video-space']} onClick={handleToggleIsPlaying}></div>
           <div className={styles.panel__menu}>
             <div className={styles.panel__controllers}>
-              <PlayButton onClick={handleToggleIsPlaying} />
+              <PlayButton onClick={handleToggleIsPlaying} isPlaying={isPlaying} />
               <Slider
                 syncValue={currentVideoTime}
                 handleMouseUp={handleMouseUpProgressBar}
               />
             </div>
             <div className={styles['panel__interaction-buttons']}>
-              <div>
+              <div className={styles.volume}>
+                <Icon url={'/volume.svg'} alt={'volume'} />
                 <Slider
                   initValue={volume}
                   handleMouseUp={handleSetVolume}
                 />
               </div>
-              <Icon url={'/like.svg'} alt={'like'} />
-              <Icon url={'/like.svg'} alt={'dislike'} isUpsideDown={true}/>
-              <Icon url={'/share.svg'} alt={'share'} />
+              <LikeButtons />
+              <ShareButton />
             </div>
           </div>
         </div>

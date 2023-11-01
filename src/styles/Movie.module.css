@@ -54,3 +54,9 @@
   justify-content: flex-end;
   gap: 1.4rem;
 }
+
+.volume {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
