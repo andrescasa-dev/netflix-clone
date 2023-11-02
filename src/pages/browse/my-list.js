@@ -1,8 +1,11 @@
+import Text from '@/components/atoms/Text'
+import MessageToLogin from '@/components/molecules/MessageToLogin'
 import MoviesSection from '@/components/molecules/MoviesSection'
 import Header from '@/components/organisms/Header'
 import useLoadMagicUserAuth from '@/hooks/useLoadMagicUserAuth'
 import getLikedVideosByUser from '@/lib/database/getLikedVideosByUser'
 import redirectLoginIfNotAuth from '@/lib/ssr/redirectLoginIfNotAuth'
+import { useGlobalStore } from '@/stores/GlobalStore'
 import Head from 'next/head'
 
 // render liked videos
@@ -25,6 +28,7 @@ export async function getServerSideProps (context) {
 }
 
 export default function MyList ({ likedVideos }) {
+  const { globalStore } = useGlobalStore()
   useLoadMagicUserAuth()
 
   return (
@@ -34,9 +38,11 @@ export default function MyList ({ likedVideos }) {
     </Head>
     <main className={'mainLayout '}>
       <Header />
-      {likedVideos.length > 0
-        ? <MoviesSection isWrap={true} videos={likedVideos} sizeOfCards='big' subtitle='My List' />
-        : <p>please login</p>
+      {globalStore.isLogin
+        ? likedVideos.length > 0
+          ? <MoviesSection isWrap={true} videos={likedVideos} sizeOfCards='big' subtitle='My List' />
+          : <Text content={"you don't have any like videos yet"} />
+        : <MessageToLogin />
       }
     </main>
     </>
