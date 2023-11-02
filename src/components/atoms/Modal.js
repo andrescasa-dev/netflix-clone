@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import Icon from './Icon'
 import Image from 'next/image'
 
-export default function Modal ({ showModal, setIsOpenModal, children, backgroundUrl, imgUrl }) {
+export default function Modal ({ showModal, setIsOpenModal, children }) {
   const modal = useRef(null)
 
   useEffect(() => {
@@ -35,10 +35,8 @@ export default function Modal ({ showModal, setIsOpenModal, children, background
     }
   }
 
-  const backgroundClass = backgroundUrl && styles['modal--background-image']
-
   return (
-    <dialog ref={modal} className={`${styles.modal} ${backgroundClass}`} onKeyDown={handlePressKeyClose}>
+    <dialog ref={modal} className={styles.modal} onKeyDown={handlePressKeyClose}>
       <div className={styles['modal--background-image']}>
         <Image
           src='/signin-bg.jpeg' fill={true} objectFit='cover'

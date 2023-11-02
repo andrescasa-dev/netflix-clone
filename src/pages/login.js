@@ -1,12 +1,7 @@
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
 import Logo from '@/components/atoms/Logo'
 import Head from 'next/head'
 import styles from '@/styles/login.module.css'
-import { useRef } from 'react'
-import magic from '@/lib/magicClient'
-import { useRouter } from 'next/router'
-import useLoadingRoute from '@/hooks/useLoadingRoute'
+import LoginModal from '@/components/organisms/LoginModal'
 
 /*  TODO
 - [] show the errors catched to de user.
@@ -14,48 +9,6 @@ import useLoadingRoute from '@/hooks/useLoadingRoute'
 */
 
 export default function Login () {
-  const [isLoading, setIsLoading] = useLoadingRoute()
-  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.com|es$/i
-  const inputRef = useRef(null)
-  const router = useRouter()
-
-  const handleRedirectFocus = (e) => {
-    inputRef.current.focus()
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    const isValidInput = emailRegex.test(inputRef.current.value)
-    if (isValidInput) {
-      try {
-        const email = String(inputRef.current.value)
-        setIsLoading(true)
-        const didToken = await magic.auth.loginWithMagicLink({ email })
-        if (didToken) {
-          const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${didToken}`,
-              'Content-Type': 'application/json'
-            }
-          })
-          const { couldLogin } = await response.json()
-          if (couldLogin) {
-            router.push('/')
-          } else {
-            setIsLoading(false)
-          }
-        } else {
-          throw new Error("didToken wasn't return")
-        }
-      } catch (error) {
-        setIsLoading(false)
-        console.error('Error while login with magic Error: ' + error)
-      }
-    } else {
-      console.log('not redirect')
-    }
-  }
   return (
     <>
       <Head>
@@ -65,11 +18,7 @@ export default function Login () {
         <Logo size='big' />
       </header>
       <main className={styles.main}>
-        <div htmlFor='input' onClick={handleRedirectFocus} className={styles['login-form']}>
-          <h1 className={styles['login-form__title']} >Sign In</h1>
-          <Input regex={emailRegex} inputRef={inputRef} />
-          <Button text={isLoading ? 'loading...' : 'Sign In'} isFullWidth={true} handleClick={handleSubmit}/>
-        </div>
+        <LoginModal willRedirectToHome={true} />
       </main>
     </>
   )

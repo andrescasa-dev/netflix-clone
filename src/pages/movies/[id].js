@@ -108,7 +108,7 @@ export default function MoviePage () {
 
         <div className={styles.panel} ref={panelRef} onMouseMove={handleOnMove}>
           <div className={styles.panel__header}>
-            <Link href={'/'} scroll={false} replace>
+            <Link href={'/'} scroll={false}>
               <Icon url={'/arrow.svg'} alt={'go back'} />
             </Link>
             <Text content={title} type={'relevant'} />
@@ -130,7 +130,7 @@ export default function MoviePage () {
                   handleMouseUp={handleSetVolume}
                 />
               </div>
-              <LikeButtons />
+              <LikeButtons onNoLoggedClick={() => setIsPlaying(false)} />
               <ShareButton />
             </div>
           </div>

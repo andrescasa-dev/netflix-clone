@@ -6,10 +6,9 @@ import PreviewModal from '../organisms/PreviewModal'
 
 export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not found', id }) {
   const [finalImgUrl, setFinalImgUrl] = useState(imgUrl)
-  const [showModal, setIsOpenModal] = useState(false)
+  const [isOpenModal, setIsOpenModal] = useState(false)
 
   const handleClick = (e) => {
-    console.log('click card')
     setIsOpenModal(true)
   }
 
@@ -28,7 +27,7 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
 
   return (
     <article className={`${styles.card} ${sizeMap[`${size}`]} ${hoverEffect}`} >
-      <Modal showModal={showModal} setIsOpenModal={setIsOpenModal} imgUrl={finalImgUrl}>
+      <Modal showModal={isOpenModal} setIsOpenModal={setIsOpenModal}>
           <PreviewModal movieId={ id } />
       </Modal>
       <div onClick={handleClick}>

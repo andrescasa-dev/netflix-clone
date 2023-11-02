@@ -4,7 +4,8 @@ import '@/styles/globals.css'
 export default function App ({ Component, pageProps }) {
   return (
     <GlobalStore initialStore={{
-      isLoading: true,
+      isLogin: false,
+      isLoadingAuth: true,
       username: ''
     }}>
       <Component {...pageProps} />

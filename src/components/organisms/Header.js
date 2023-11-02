@@ -8,7 +8,6 @@ import Link from 'next/link'
 
 export default function Header () {
   const { globalStore, dispatchGlobalStore } = useGlobalStore()
-  console.log('globalStore in header', globalStore)
   const router = useRouter()
   const handleMagicLogOut = async (e) => {
     e.preventDefault()
@@ -33,7 +32,7 @@ export default function Header () {
         <NavLink text='Home' href='/'/>
         <NavLink text='My List' href='/browse/my-list'/>
         <div className={styles.header__dropdown}>
-           {globalStore.isLoading
+           {globalStore.isLoadingAuth
              ? 'loading...'
              : !globalStore.username
                  ? <Link href={'/login'}>Login</Link>
