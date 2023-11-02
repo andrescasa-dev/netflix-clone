@@ -7,8 +7,8 @@ import MoviesSection from '@/components/molecules/MoviesSection'
 import { getVideosBySearch } from '@/lib/getVideosBySearch'
 import { getPopularVideosByLocation } from '@/lib/getPopularVideosByLocation'
 import getWatchedVideosByUser from '@/lib/database/getWatchedVideosByUser'
-import redirectIfNotAuth from '@/lib/ssr/redirectLoginIfNotAuth'
-import useLoadMagicUserAuth from '@/hooks/useLoadMagicUserAuth'
+import checkUserAuth from '@/lib/ssr/checkUserAuth'
+import useLoadGlobalStoreAuth from '@/hooks/useLoadGlobalStoreAuth'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
@@ -18,13 +18,11 @@ export async function getServerSideProps (context) {
     const horrorVideos = await getVideosBySearch('horror')
     const popularVideos = await getPopularVideosByLocation(['21.5922529', '-158.1147114'])
 
-    // handling no authUsers
-    const { userId, userJWT, redirectResponse } = redirectIfNotAuth(context)
+    const { userEmail, userJWT, userId, isLoggedIn } = checkUserAuth(context)
     // if (redirectResponse) { return redirectResponse }
+    const watchedVideos = isLoggedIn ? await getWatchedVideosByUser({ userId }, userJWT) : []
 
-    const watchedVideos = userId ? await getWatchedVideosByUser({ userId }, userJWT) : []
-
-    return { props: { actionVideos, horrorVideos, popularVideos, watchedVideos } }
+    return { props: { actionVideos, horrorVideos, popularVideos, watchedVideos, auth: { isLoggedIn, userEmail } } }
   } catch (error) {
     console.error('error in SSR home')
     console.error(error)
@@ -32,9 +30,10 @@ export async function getServerSideProps (context) {
   }
 }
 
-export default function Home (props) {
-  useLoadMagicUserAuth()
-  const { horrorVideos, actionVideos, popularVideos, watchedVideos } = props
+export default function Home ({ horrorVideos, actionVideos, popularVideos, watchedVideos, auth }) {
+  // useLoadMagicUserAuth()
+  useLoadGlobalStoreAuth(auth)
+
   return (
     <>
       <Head>

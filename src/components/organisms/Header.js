@@ -9,20 +9,22 @@ import Link from 'next/link'
 export default function Header () {
   const { globalStore, dispatchGlobalStore } = useGlobalStore()
   const router = useRouter()
-  const handleMagicLogOut = async (e) => {
+
+  const handleLogOutClick = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('/api/logout')
-      const res = await response.json()
-      console.log('res: ', res)
-      dispatchGlobalStore({
-        type: 'update_username',
-        payload: { username: '' }
-      })
+      await serverLogOut()
+      dispatchGlobalStore({ type: 'logout_user' })
+      router.push('/login')
     } catch (error) {
       console.error('Error logging out', error)
-      router.push('/login')
     }
+  }
+
+  const serverLogOut = async () => {
+    const response = await fetch('/api/logout')
+    const res = await response.json()
+    console.log('res: ', res)
   }
 
   return (
@@ -34,9 +36,9 @@ export default function Header () {
         <div className={styles.header__dropdown}>
            {globalStore.isLoadingAuth
              ? 'loading...'
-             : !globalStore.username
+             : !globalStore.isLoggedIn
                  ? <Link href={'/login'}>Login</Link>
-                 : <Dropdown text={globalStore.username } handleClick={handleMagicLogOut} />
+                 : <Dropdown text={globalStore.username } handleClick={handleLogOutClick} />
            }
         </div>
       </div>

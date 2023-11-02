@@ -11,7 +11,7 @@ export default function LikeButtons ({ onNoLoggedClick }) {
   const { globalStore } = useGlobalStore()
 
   const toggleLike = (e) => {
-    if (globalStore.isLogin) {
+    if (globalStore.isLoggedIn) {
       setValue((prev) => {
         return prev === 'like' ? null : 'like'
       })
@@ -21,7 +21,7 @@ export default function LikeButtons ({ onNoLoggedClick }) {
     }
   }
   const toggleDislike = (e) => {
-    if (globalStore.isLogin) {
+    if (globalStore.isLoggedIn) {
       setValue((prev) => {
         return prev === 'dislike' ? null : 'dislike'
       })

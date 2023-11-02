@@ -34,7 +34,7 @@ export default async function login (req, res) {
         // just save the user
         setAuthCookie(userJwt, res) // pass a cookie for de JWT of the logged user
       } else {
-        // create and save the user
+        // register new user
         setAuthCookie(userJwt, res) // pass a cookie for de JWT of the logged user
         await createUser(metadata, userJwt)
       }
