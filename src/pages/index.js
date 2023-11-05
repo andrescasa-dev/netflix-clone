@@ -18,7 +18,7 @@ export async function getServerSideProps (context) {
     const horrorVideos = await getVideosBySearch('horror')
     const popularVideos = await getPopularVideosByLocation(['21.5922529', '-158.1147114'])
 
-    const { userEmail, userJWT, userId, isLoggedIn } = checkUserAuth(context)
+    const { userEmail, userJWT, userId, isLoggedIn } = checkUserAuth(context.req.cookies)
     // if (redirectResponse) { return redirectResponse }
     const watchedVideos = isLoggedIn ? await getWatchedVideosByUser({ userId }, userJWT) : []
 

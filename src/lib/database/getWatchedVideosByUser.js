@@ -4,9 +4,9 @@ import fetchGraphQL from './hasura'
 
 const operationsDoc = `
   query GetWatchedVideosByUser($userId: String!) {
-    user_videos(where: {user_id: {_eq: $userId}, hasWatched: {_eq: true}}) {
+    user_videos(where: {userId: {_eq: $userId}, hasWatched: {_eq: true}}) {
       id
-      video_id
+      videoId
     }
   }
 `

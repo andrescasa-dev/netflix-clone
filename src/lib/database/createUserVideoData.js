@@ -1,28 +1,24 @@
+import checkRequiredVariables from '../checkRequiredVaraibles'
 import fetchGraphQL from './hasura'
+import variablesToGQLStringObj from './variablesToGQLStringObj'
 
-const operationsDoc = `
-  mutation CreateUserVideoData($hasWatched: Boolean!, $likedStatus: numeric!, $userId: String!, $videoId: String! ) {
-    insert_user_videos_one(object: {hasWatched: $hasWatched, likedStatus: $likedStatus, user_id: $userId, video_id: $videoId}) {
+const getOperationsDoc = (variables) => {
+  return `
+  mutation CreateUserVideoData($hasWatched: Boolean, $likedStatus: numeric, $userId: String!, $videoId: String! ) {
+    insert_user_videos_one(object: ${variablesToGQLStringObj(variables)}){
       id
     }
   }
 `
-
-const checkRequiredVariables = (requiredVariables, variables) => {
-  const missingVariables = requiredVariables.filter(key => typeof variables[key] === 'undefined')
-
-  if (missingVariables.length > 0) {
-    throw new Error(`missing the next required variables: ${missingVariables.join(', ')}`)
-  }
 }
 
 export default async function createUserVideoData (variables, userJwt) {
-  const { errors, data } = await fetchGraphQL(operationsDoc, 'CreateUserVideoData', variables, userJwt)
-  checkRequiredVariables(['hasWatched', 'likedStatus', 'videoId', 'userId'], variables)
+  checkRequiredVariables(['videoId', 'userId'], variables)
+  const { errors, data } = await fetchGraphQL(getOperationsDoc(variables), 'CreateUserVideoData', variables, userJwt)
 
   if (errors) {
     console.error(errors)
-    throw new Error('Error while executing GQL petition')
+    throw new Error('Error while executing GQL petition CreateUserVideoData')
   }
 
   return data

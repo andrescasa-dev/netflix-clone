@@ -7,7 +7,7 @@ export const getVideosByIdArray = (videosIdArray) => {
   const exampleVideosArray = videos.items
 
   const foundVideos = videosIdArray.map((userVideo) => {
-    const { video_id: videoId } = userVideo
+    const { videoId } = userVideo
     if (!videoId || videoId === '') throw new Error('id param is required')
     const videoFound = exampleVideosArray.find((videoExample) => videoExample.id.videoId === videoId)
 

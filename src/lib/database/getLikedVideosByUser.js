@@ -4,8 +4,8 @@ import fetchGraphQL from './hasura'
 
 const operationsDoc = `
   query GetLikedVideosByUser($userId:String!) {
-    user_videos(where: {user_id: {_eq: $userId}, likedStatus: {_eq: "1"}}) {
-      video_id
+    user_videos(where: {userId: {_eq: $userId}, likedStatus: {_eq: "1"}}) {
+      videoId
     }
   }
 `

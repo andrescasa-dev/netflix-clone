@@ -3,10 +3,8 @@ import MessageToLogin from '@/components/molecules/MessageToLogin'
 import MoviesSection from '@/components/molecules/MoviesSection'
 import Header from '@/components/organisms/Header'
 import useLoadGlobalStoreAuth from '@/hooks/useLoadGlobalStoreAuth'
-import useLoadMagicUserAuth from '@/hooks/useLoadMagicUserAuth'
 import getLikedVideosByUser from '@/lib/database/getLikedVideosByUser'
 import checkUserAuth from '@/lib/ssr/checkUserAuth'
-import { useGlobalStore } from '@/stores/GlobalStore'
 import Head from 'next/head'
 
 // render liked videos
@@ -14,7 +12,7 @@ import Head from 'next/head'
 
 export async function getServerSideProps (context) {
   try {
-    const { userEmail, userJWT, userId, isLoggedIn } = checkUserAuth(context)
+    const { userEmail, userJWT, userId, isLoggedIn } = checkUserAuth(context.req.cookies)
 
     // read data
     const likedVideos = isLoggedIn ? await getLikedVideosByUser({ userId }, userJWT) : []

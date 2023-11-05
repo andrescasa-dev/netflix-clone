@@ -1,5 +1,4 @@
 import styles from '@/styles/Movie.module.css'
-import Header from '@/components/organisms/Header'
 import Head from 'next/head'
 import Text from '@/components/atoms/Text'
 import Icon from '@/components/atoms/Icon'
@@ -11,13 +10,24 @@ import { useRouter } from 'next/router'
 import LikeButtons from '@/components/molecules/LikeButtons'
 import ShareButton from '@/components/atoms/ShareButton'
 import Link from 'next/link'
+import Header from '@/components/organisms/Header'
+import useLoadGlobalStoreAuth from '@/hooks/useLoadGlobalStoreAuth'
+import checkUserAuth from '@/lib/ssr/checkUserAuth'
+import queryUserVideoData from '@/lib/database/queryUserVideoData'
+import postUserVideoData from '@/lib/browser/postUserVideoData'
 
-/* todo
+export async function getServerSideProps (context) {
+  const { userEmail, userJWT, userId, isLoggedIn } = checkUserAuth(context.req.cookies)
+  const videoId = context.params.id
 
-- [] refactor slider
-*/
+  const userVideoData = isLoggedIn
+    ? await queryUserVideoData({ userId, videoId }, userJWT)
+    : []
 
-export default function MoviePage () {
+  return { props: { userVideoData, auth: { userEmail, isLoggedIn } } }
+}
+
+export default function MoviePage ({ userVideoData, auth }) {
   const timer = useRef(null)
   const playerRef = useRef(null)
   const panelRef = useRef(null)
@@ -28,12 +38,20 @@ export default function MoviePage () {
   const videoId = router.query.id
   const title = decodeURI(router.query.title)
   const [volume, setVolume] = useState(50)
-
   useEffect(() => {
     return () => {
       clearTimeout(timer.current)
     }
   }, [])
+
+  const handleOnStart = (e) => {
+    if (!userVideoData.hasWatched) {
+      postUserVideoData({
+        videoId,
+        hasWatched: true
+      })
+    }
+  }
 
   const handleSetVolume = (e) => {
     setVolume(e.target.value / 100)
@@ -60,17 +78,7 @@ export default function MoviePage () {
   }
 
   const handleToggleIsPlaying = (e) => {
-    console.log('toggle playing')
-    setIsPlaying((prev) => {
-      console.log(prev)
-      return !prev
-    })
-  }
-
-  const handleReadyVideo = (e) => {
-    if (playerRef.current) {
-      setIsPlaying(true)
-    }
+    setIsPlaying((prev) => !prev)
   }
 
   const handleVideoProgress = ({ playedSeconds }) => {
@@ -84,11 +92,13 @@ export default function MoviePage () {
     setIsClient(true)
   }, [])
 
+  useLoadGlobalStoreAuth(auth)
   return (
     <>
       <Head>
         <title>Movie</title>
       </Head>
+      <Header />
       <main className={styles.movie}>
         {isClient &&
         <div className={styles.movie__video} >
@@ -98,8 +108,8 @@ export default function MoviePage () {
             playing={isPlaying}
             height={'100%'}
             width={'100%'}
+            onStart={handleOnStart}
             onPause={() => { showPanel() }}
-            onReady={handleReadyVideo}
             onProgress={handleVideoProgress}
             ref={playerRef}
           />
@@ -130,7 +140,7 @@ export default function MoviePage () {
                   handleMouseUp={handleSetVolume}
                 />
               </div>
-              <LikeButtons onNoLoggedClick={() => setIsPlaying(false)} />
+              <LikeButtons initValue={userVideoData.likedStatus} clickNoLoggedCB={ () => setIsPlaying(false)} />
               <ShareButton />
             </div>
           </div>
