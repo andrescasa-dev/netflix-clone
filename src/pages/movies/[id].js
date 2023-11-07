@@ -45,12 +45,11 @@ export default function MoviePage ({ userVideoData, auth }) {
   }, [])
 
   const handleOnStart = (e) => {
-    if (!userVideoData.hasWatched) {
-      postUserVideoData({
-        videoId,
-        hasWatched: true
-      })
-    }
+    const date = new Date()
+    postUserVideoData({
+      videoId,
+      watchedAt: date.toISOString()
+    }).then((data) => console.log('mutation for watchedAt, data: ', data))
   }
 
   const handleSetVolume = (e) => {

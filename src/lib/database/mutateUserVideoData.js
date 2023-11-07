@@ -5,7 +5,7 @@ import variablesToGQLStringObj from './variablesToGQLStringObj'
 const getOperationsDoc = (variables) => {
   const { videoId, userId, ...variablesToSet } = variables
   return `
-  mutation MutateUserVideoData($videoId: String!, $userId: String!, $hasWatched: Boolean, $likedStatus: numeric) {
+  mutation MutateUserVideoData($videoId: String!, $userId: String!, $watchedAt: timestamptz, $likedStatus: numeric) {
     update_user_videos(
       where: {videoId: {_eq: $videoId}, userId: {_eq: $userId}}, 
       _set: ${variablesToGQLStringObj(variablesToSet)}) 

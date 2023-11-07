@@ -4,7 +4,7 @@
  * const videoData = {
  *   video_id: '12345', // error la variable en la DB se llama videoId
  *   userId: 'user123',
- *   has_been_watched: true, // error la variable en la DB se llama hasWatched
+ *   has_been_watched: true, // error la variable en la DB se llama watchedAt y es un timestamp
  *   likedStatus: 1,
  *   // ... otros campos de datos
  * };

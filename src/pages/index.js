@@ -18,9 +18,8 @@ export async function getServerSideProps (context) {
     const horrorVideos = await getVideosBySearch('horror')
     const popularVideos = await getPopularVideosByLocation(['21.5922529', '-158.1147114'])
 
-    const { userEmail, userJWT, userId, isLoggedIn } = checkUserAuth(context.req.cookies)
-    // if (redirectResponse) { return redirectResponse }
-    const watchedVideos = isLoggedIn ? await getWatchedVideosByUser({ userId }, userJWT) : []
+    const { userEmail, userJWT, isLoggedIn } = checkUserAuth(context.req.cookies)
+    const watchedVideos = isLoggedIn ? await getWatchedVideosByUser(userJWT) : []
 
     return { props: { actionVideos, horrorVideos, popularVideos, watchedVideos, auth: { isLoggedIn, userEmail } } }
   } catch (error) {
@@ -51,10 +50,10 @@ export default function Home ({ horrorVideos, actionVideos, popularVideos, watch
           subtitle={'A very cute dog'}
           ctaVideoId={'ma67yOdMQfs'}
         />
-        <MoviesSection sizeOfCards='big' videos={horrorVideos} subtitle='Horror'/>
-        {watchedVideos?.length > 0 && <MoviesSection sizeOfCards='mid' videos={watchedVideos} subtitle='Recent watched'/>}
+        <MoviesSection sizeOfCards='big' videos={popularVideos} subtitle='Popular'/>
+        <MoviesSection sizeOfCards='mid' videos={horrorVideos} subtitle='Horror'/>
+        {watchedVideos?.length > 0 && <MoviesSection sizeOfCards='small' videos={watchedVideos} subtitle='Recent watched'/>}
         <MoviesSection sizeOfCards='mid' videos={actionVideos} subtitle='Action'/>
-        <MoviesSection sizeOfCards='small' videos={popularVideos} subtitle='Popular'/>
       </main>
     </>
   )

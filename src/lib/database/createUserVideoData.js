@@ -4,7 +4,7 @@ import variablesToGQLStringObj from './variablesToGQLStringObj'
 
 const getOperationsDoc = (variables) => {
   return `
-  mutation CreateUserVideoData($hasWatched: Boolean, $likedStatus: numeric, $userId: String!, $videoId: String! ) {
+  mutation CreateUserVideoData($watchedAt: timestamptz, $likedStatus: numeric, $userId: String!, $videoId: String! ) {
     insert_user_videos_one(object: ${variablesToGQLStringObj(variables)}){
       id
     }
