@@ -6,9 +6,9 @@ import { useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useGlobalStore } from '@/stores/GlobalStore'
 
-export default function LoginModal ({ willRedirectToHome = false, willUpdateGlobalStore = false, setIsOpenModal }) {
+export default function LoginModal ({ willRedirectToHome = false, willUpdateGlobalStore = false, openModal, closeModal }) {
   if (!willRedirectToHome && !willUpdateGlobalStore) console.warn('nothing will happen after user login, set willRedirectToHome or willUpdateGlobalStore')
-  if (willUpdateGlobalStore && !setIsOpenModal) console.error('when modal will update global store, setIsOpenModal have to be provided')
+  if (willUpdateGlobalStore && (!openModal || !closeModal)) console.error('when modal will update global store, openModal and closeModal have to be provided')
   const [isLoading, setIsLoading] = useState(false)
   const { dispatchGlobalStore } = useGlobalStore()
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.com|es$/i
@@ -22,13 +22,14 @@ export default function LoginModal ({ willRedirectToHome = false, willUpdateGlob
   const handleSubmit = async (e) => {
     e.preventDefault()
     const isValidInput = emailRegex.test(inputRef.current.value)
-    if (isValidInput) {
+    if (isValidInput) { // invert this if
       try {
         const email = String(inputRef.current.value)
         setIsLoading(true)
-        if (willUpdateGlobalStore) setIsOpenModal(false)
+        if (willUpdateGlobalStore) closeModal()
+        // login
         const didToken = await magic.auth.loginWithMagicLink({ email })
-        if (didToken) {
+        if (didToken) { // invert this if
           const response = await fetch('/api/login', {
             method: 'POST',
             headers: {
@@ -37,14 +38,17 @@ export default function LoginModal ({ willRedirectToHome = false, willUpdateGlob
             }
           })
           const { couldLogin } = await response.json()
+          // en login
           if (couldLogin) {
+            // after success login cb
             willRedirectToHome && router.push('/')
             if (willUpdateGlobalStore) {
               dispatchGlobalStore({ type: 'login_user', payload: { email } })
               setIsLoading(false)
             }
           } else {
-            if (willUpdateGlobalStore) setIsOpenModal(true)
+            // after failure login cb
+            if (willUpdateGlobalStore) openModal()
             setIsLoading(false)
           }
         } else {

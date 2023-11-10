@@ -5,20 +5,16 @@ import Button from '../atoms/Button'
 import Icon from '../atoms/Icon'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { getVideoDetailExample } from '@/lib/videoExample'
-import LikeButtons from '../molecules/LikeButtons'
-/*
-TODO
--[ ] too large title => make this smaller
--[ ] too large description => smaller and
--[ ] parse view count
-*/
+
 export default function PreviewModal ({ movieId }) {
   const [movie, setMovie] = useState(null)
   useEffect(() => {
-    // fetch data
-    const data = getVideoDetailExample()
-    setMovie(data)
+    const fetching = async () => {
+      const response = await fetch(`/api/videos?id=${movieId}`)
+      const { video } = await response.json()
+      setMovie(video)
+    }
+    fetching()
   }, [])
 
   const shortenText = (text) => {

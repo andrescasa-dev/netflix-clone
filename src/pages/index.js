@@ -4,35 +4,44 @@ import { Roboto_Slab } from 'next/font/google'
 import Hero from '@/components/molecules/Hero'
 import Header from '@/components/organisms/Header'
 import MoviesSection from '@/components/molecules/MoviesSection'
-import { getVideosBySearch } from '@/lib/getVideosBySearch'
-import { getPopularVideosByLocation } from '@/lib/getPopularVideosByLocation'
 import getWatchedVideosByUser from '@/lib/database/getWatchedVideosByUser'
 import checkUserAuth from '@/lib/ssr/checkUserAuth'
 import useLoadGlobalStoreAuth from '@/hooks/useLoadGlobalStoreAuth'
+import { getPopularVideos, getVideosByCategory } from '@/lib/vimeoLocalSDK'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
 export async function getServerSideProps (context) {
   try {
-    const actionVideos = await getVideosBySearch('action')
-    const horrorVideos = await getVideosBySearch('horror')
-    const popularVideos = await getPopularVideosByLocation(['21.5922529', '-158.1147114'])
+    const horrorVideos = []
+    const comedyVideos = []
+    const documentaryVideos = []
+    const popularVideos = await getPopularVideos()
+    // const comedyVideos = await getVideosByCategory('comedy')
+    // const documentaryVideos = await getVideosByCategory('documentary')
+    // const popularVideos = await getPopularVideos()
 
     const { userEmail, userJWT, isLoggedIn } = checkUserAuth(context.req.cookies)
     const watchedVideos = isLoggedIn ? await getWatchedVideosByUser(userJWT) : []
 
-    return { props: { actionVideos, horrorVideos, popularVideos, watchedVideos, auth: { isLoggedIn, userEmail } } }
+    const auth = { isLoggedIn, userEmail }
+    const videos = { horrorVideos, comedyVideos, documentaryVideos, popularVideos, watchedVideos }
+
+    return { props: { videos, auth } }
   } catch (error) {
     console.error('error in SSR home')
     console.error(error)
-    return { props: { videosData: [] } }
+    const videos = { horrorVideos: [], comedyVideos: [], documentaryVideos: [], popularVideos: [], watchedVideos: [] }
+    const auth = { isLoggedIn: false }
+    return { props: { videos, auth } }
   }
 }
 
-export default function Home ({ horrorVideos, actionVideos, popularVideos, watchedVideos, auth }) {
+export default function Home ({ videos, auth }) {
   // useLoadMagicUserAuth()
+  console.log(auth)
   useLoadGlobalStoreAuth(auth)
-
+  const { horrorVideos, comedyVideos, documentaryVideos, popularVideos, watchedVideos } = videos
   return (
     <>
       <Head>
@@ -51,9 +60,10 @@ export default function Home ({ horrorVideos, actionVideos, popularVideos, watch
           ctaVideoId={'ma67yOdMQfs'}
         />
         <MoviesSection sizeOfCards='big' videos={popularVideos} subtitle='Popular'/>
+        {/* {watchedVideos?.length > 0 && <MoviesSection sizeOfCards='small' videos={watchedVideos} subtitle='Recent watched'/>}
         <MoviesSection sizeOfCards='mid' videos={horrorVideos} subtitle='Horror'/>
-        {watchedVideos?.length > 0 && <MoviesSection sizeOfCards='small' videos={watchedVideos} subtitle='Recent watched'/>}
-        <MoviesSection sizeOfCards='mid' videos={actionVideos} subtitle='Action'/>
+        <MoviesSection sizeOfCards='mid' videos={comedyVideos} subtitle='Comedy'/>
+        <MoviesSection sizeOfCards='mid' videos={documentaryVideos} subtitle='Documentary'/> */}
       </main>
     </>
   )

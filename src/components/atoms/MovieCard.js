@@ -1,16 +1,12 @@
 import styles from '@/styles/MovieCard.module.css'
 import Image from 'next/image'
 import { useState } from 'react'
-import Modal from './Modal'
 import PreviewModal from '../organisms/PreviewModal'
+import { useModal } from './Modal'
 
 export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not found', id }) {
   const [finalImgUrl, setFinalImgUrl] = useState(imgUrl)
-  const [isOpenModal, setIsOpenModal] = useState(false)
-
-  const handleClick = (e) => {
-    setIsOpenModal(true)
-  }
+  const { Modal, openModal } = useModal()
 
   const handleError = (e) => {
     console.error('Error loading image of MovieCard')
@@ -27,10 +23,10 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
 
   return (
     <article className={`${styles.card} ${sizeMap[`${size}`]} ${hoverEffect}`} >
-      <Modal showModal={isOpenModal} setIsOpenModal={setIsOpenModal}>
+      <Modal>
           <PreviewModal movieId={ id } />
       </Modal>
-      <div onClick={handleClick}>
+      <div onClick={() => openModal()} >
         <Image
             fill={true}
             objectFit='cover'

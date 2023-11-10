@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       {
@@ -9,6 +9,9 @@ const nextConfig = {
       },
       {
         hostname: 'i.ytimg.com'
+      },
+      {
+        hostname: 'i.vimeocdn.com'
       }
     ]
   }

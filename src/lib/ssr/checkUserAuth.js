@@ -8,7 +8,7 @@ export default function checkUserAuth (cookies) {
   // has the user a valid JWT (our JWT)?
   const JWTData = userJWT && jwt.verify(userJWT, process.env.JWT_SECRET_KEY)
   const userId = JWTData?.issuer
-  const userEmail = JWTData?.email
+  const userEmail = JWTData?.email ?? ''
 
   const isLoggedIn = Boolean(userEmail)
 
