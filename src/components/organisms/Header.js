@@ -13,7 +13,7 @@ export default function Header () {
   const handleLogOutClick = async (e) => {
     e.preventDefault()
     try {
-      await serverLogOut()
+      await fetch('/api/logout')
       dispatchGlobalStore({ type: 'logout_user' })
       router.push('/login')
     } catch (error) {
@@ -21,11 +21,6 @@ export default function Header () {
     }
   }
 
-  const serverLogOut = async () => {
-    const response = await fetch('/api/logout')
-    const res = await response.json()
-    console.log('res: ', res)
-  }
   return (
     <header className={`${styles.header} mainLayout`}>
       <div className={styles.header__content}>

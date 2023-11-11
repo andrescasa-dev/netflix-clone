@@ -201,3 +201,7 @@ body {
 button {
   cursor: pointer;
 }
+
+.hide {
+  opacity: 0;
+}

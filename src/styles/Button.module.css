@@ -19,3 +19,8 @@
 .button:hover {
   background-color: var(--red10);
 }
+
+.button:disabled {
+  cursor: auto;
+  background-color: var(--red10);
+}

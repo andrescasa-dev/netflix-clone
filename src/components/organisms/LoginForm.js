@@ -6,10 +6,19 @@ import { useRef, useState } from 'react'
 import { useGlobalStore } from '@/stores/GlobalStore'
 
 export default function LoginForm ({ afterSuccessfullyLogin, afterUnsuccessfullyLogin, beforeShowUIMagic }) {
-  const [isLoading, setIsLoading] = useState(false)
-  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.com|es$/i
+  const emailRegex = useRef(/^[\w._]+(@[\w]{2,})+\.[\w]{2,}$/i)
   const inputRef = useRef(null)
+  const submitRef = useRef(null)
+  const [isLoading, setIsLoading] = useState(false)
   const { dispatchGlobalStore } = useGlobalStore()
+
+  const onEmptyInput = () => {
+    submitRef.current.disabled = true
+  }
+
+  const onInputValidation = (isValidInput) => {
+    submitRef.current.disabled = !isValidInput
+  }
 
   const handleRedirectFocus = (e) => {
     inputRef.current.focus()
@@ -34,16 +43,10 @@ export default function LoginForm ({ afterSuccessfullyLogin, afterUnsuccessfully
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
     try {
-      const isValidInput = emailRegex.test(inputRef.current.value)
-      if (!isValidInput) {
-        console.log('invalid input')
-        return false
-      }
-      setIsLoading(true)
       const email = String(inputRef.current.value)
       beforeShowUIMagic && beforeShowUIMagic()
-
       const couldLogin = await login(email)
       console.log('couldLogin', couldLogin)
       if (couldLogin) {
@@ -61,8 +64,8 @@ export default function LoginForm ({ afterSuccessfullyLogin, afterUnsuccessfully
   return (
     <div onClick={handleRedirectFocus} className={styles['login-form']}>
       <h1 className={styles['login-form__title']} >Log In</h1>
-      <Input regex={emailRegex} inputRef={inputRef} />
-      <Button text={isLoading ? 'loading...' : 'Log In'} isFullWidth={true} handleClick={handleSubmit}/>
+      <Input regex={emailRegex.current} inputRef={inputRef} onInputValidation={onInputValidation} onEmptyInput={onEmptyInput}/>
+      <Button submitRef={submitRef} text={isLoading ? 'loading...' : 'Log In'} isFullWidth={true} handleClick={handleSubmit}/>
     </div>
   )
 }
