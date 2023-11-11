@@ -15,8 +15,8 @@ import useLoadGlobalStoreAuth from '@/hooks/useLoadGlobalStoreAuth'
 import checkUserAuth from '@/lib/ssr/checkUserAuth'
 import queryUserVideoData from '@/lib/database/queryUserVideoData'
 import postUserVideoData from '@/lib/browser/postUserVideoData'
-import LoginModal from '@/components/organisms/LoginModal'
 import { useModal } from '@/components/atoms/Modal'
+import LoginForm from '@/components/organisms/LoginForm'
 
 export async function getServerSideProps (context) {
   const { userEmail, userJWT, userId, isLoggedIn } = checkUserAuth(context.req.cookies)
@@ -30,7 +30,6 @@ export async function getServerSideProps (context) {
 }
 
 export default function MoviePage ({ userVideoData, auth }) {
-  console.log('userVideoData', userVideoData)
   const timer = useRef(null)
   const playerRef = useRef(null)
   const panelRef = useRef(null)
@@ -104,13 +103,16 @@ export default function MoviePage ({ userVideoData, auth }) {
       <Header />
       <main className={styles.movie}>
         <Modal>
-            <LoginModal willUpdateGlobalStore={true} closeModal={closeModal} openModal={openModal}/>
+            <LoginForm
+              beforeShowUIMagic={() => closeModal()}
+              afterUnsuccessfullyLogin={ () => openModal()}
+            />
         </Modal>
         {isClient &&
         <div className={styles.movie__video} >
           <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${videoId}`}
-            volume={Number(volume)}
+            url={`https://vimeo.com/${videoId}`}
+            volume={Number(volume) / 100}
             playing={isPlaying}
             height={'100%'}
             width={'100%'}

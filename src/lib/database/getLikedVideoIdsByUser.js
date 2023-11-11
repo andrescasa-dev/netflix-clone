@@ -1,5 +1,4 @@
 import checkRequiredVariables from '../checkRequiredVaraibles'
-import { getVideosByIdArray } from '../getVideosById'
 import fetchGraphQL from './hasura'
 
 const operationsDoc = `
@@ -10,7 +9,7 @@ const operationsDoc = `
   }
 `
 
-export default async function getLikedVideosByUser (variables, userJwt) {
+export default async function getLikedVideoIdsByUser (variables, userJwt) {
   const { errors, data } = await fetchGraphQL(operationsDoc, 'GetLikedVideosByUser', variables, userJwt)
   checkRequiredVariables(['userId'], variables, 'while GQL petition ')
 
@@ -19,5 +18,5 @@ export default async function getLikedVideosByUser (variables, userJwt) {
     throw new Error('Error while executing GQL petition')
   }
 
-  return getVideosByIdArray(data.user_videos)
+  return data.user_videos
 }

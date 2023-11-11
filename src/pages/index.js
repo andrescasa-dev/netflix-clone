@@ -4,10 +4,10 @@ import { Roboto_Slab } from 'next/font/google'
 import Hero from '@/components/molecules/Hero'
 import Header from '@/components/organisms/Header'
 import MoviesSection from '@/components/molecules/MoviesSection'
-import getWatchedVideosByUser from '@/lib/database/getWatchedVideosByUser'
 import checkUserAuth from '@/lib/ssr/checkUserAuth'
 import useLoadGlobalStoreAuth from '@/hooks/useLoadGlobalStoreAuth'
-import { getPopularVideos, getVideosByCategory } from '@/lib/vimeoLocalSDK'
+import { getPopularVideos, getVideosByIds } from '@/lib/vimeoLocalSDK'
+import getWatchedVideoIdsByUser from '@/lib/database/getWatchedVideosByUser'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
@@ -17,12 +17,13 @@ export async function getServerSideProps (context) {
     const comedyVideos = []
     const documentaryVideos = []
     const popularVideos = await getPopularVideos()
+    // const horrorVideos = await getVideosByCategory('horror')
     // const comedyVideos = await getVideosByCategory('comedy')
     // const documentaryVideos = await getVideosByCategory('documentary')
     // const popularVideos = await getPopularVideos()
 
     const { userEmail, userJWT, isLoggedIn } = checkUserAuth(context.req.cookies)
-    const watchedVideos = isLoggedIn ? await getWatchedVideosByUser(userJWT) : []
+    const watchedVideos = isLoggedIn ? await getVideosByIds(await getWatchedVideoIdsByUser(userJWT)) : []
 
     const auth = { isLoggedIn, userEmail }
     const videos = { horrorVideos, comedyVideos, documentaryVideos, popularVideos, watchedVideos }
@@ -38,8 +39,6 @@ export async function getServerSideProps (context) {
 }
 
 export default function Home ({ videos, auth }) {
-  // useLoadMagicUserAuth()
-  console.log(auth)
   useLoadGlobalStoreAuth(auth)
   const { horrorVideos, comedyVideos, documentaryVideos, popularVideos, watchedVideos } = videos
   return (
@@ -60,10 +59,10 @@ export default function Home ({ videos, auth }) {
           ctaVideoId={'ma67yOdMQfs'}
         />
         <MoviesSection sizeOfCards='big' videos={popularVideos} subtitle='Popular'/>
-        {/* {watchedVideos?.length > 0 && <MoviesSection sizeOfCards='small' videos={watchedVideos} subtitle='Recent watched'/>}
+        {watchedVideos?.length > 0 && <MoviesSection sizeOfCards='small' videos={watchedVideos} subtitle='Recent watched'/>}
         <MoviesSection sizeOfCards='mid' videos={horrorVideos} subtitle='Horror'/>
         <MoviesSection sizeOfCards='mid' videos={comedyVideos} subtitle='Comedy'/>
-        <MoviesSection sizeOfCards='mid' videos={documentaryVideos} subtitle='Documentary'/> */}
+        <MoviesSection sizeOfCards='mid' videos={documentaryVideos} subtitle='Documentary'/>
       </main>
     </>
   )

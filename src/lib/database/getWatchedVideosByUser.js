@@ -1,17 +1,15 @@
-import { getVideosByIdArray } from '../getVideosById'
 import expireWatchedVideos from './expireWatchedVideos'
 import fetchGraphQL from './hasura'
 
 const operationsDoc = `
   query GetWatchedVideosByUser {
-    user_videos(order_by: {watchedAt: desc}, where: {watchedAt: {_is_null: false}}) {
-      id
+    user_videos(order_by: {watchedAt: desc}, where: {watchedAt: {_is_null: false}}) {      
       videoId
     }
   }
 `
 
-export default async function getWatchedVideosByUser (userJwt) {
+export default async function getWatchedVideoIdsByUser (userJwt) {
   const response = await expireWatchedVideos(userJwt)
   console.log('videos expired: ', response)
   const { errors, data } = await fetchGraphQL(operationsDoc, 'GetWatchedVideosByUser', {}, userJwt)
@@ -20,6 +18,5 @@ export default async function getWatchedVideosByUser (userJwt) {
     console.error(errors)
     throw new Error('Error while executing GQL petition')
   }
-
-  return getVideosByIdArray(data.user_videos)
+  return data.user_videos
 }

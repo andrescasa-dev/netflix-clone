@@ -10,6 +10,26 @@ const minifyVimeoVideo = ({ uri, name, pictures }) => {
   }
 }
 
+export const getVideosByIds = async (videos) => {
+  if (process.env.NEXT_PUBLIC_ACTIVE_API === 'false') return []
+  if (videos === undefined) throw new Error('videos param is required in getVideosByIds')
+  const uriArr = videos.map(video => `/videos/${video.videoId}`)
+  const queryParams = getParamUri({
+    fields: ['uri', 'name', 'pictures'],
+    page: 1,
+    per_page: process.env.NEXT_PUBLIC_VIDEO_PER_PAGE,
+    uris: uriArr
+  })
+  const url = `https://api.vimeo.com/videos?${queryParams}`
+  const { data } = await fetchVimeo(url)
+  // the petition of vimeo api altered the order of the videos. the uriArr are order by watchedAt
+  const watchedVideosReordered = uriArr.map((uri) => {
+    return data.find((video) => video.uri === uri)
+  })
+  const minifiedWatchedVideos = watchedVideosReordered.map(minifyVimeoVideo)
+  return minifiedWatchedVideos
+}
+
 export const getVideosByCategory = async (category) => {
   if (process.env.NEXT_PUBLIC_ACTIVE_API === 'false') return []
   if (!category || category === '') throw new Error('category param is required')

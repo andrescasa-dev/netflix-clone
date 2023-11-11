@@ -26,7 +26,6 @@ export default function Header () {
     const res = await response.json()
     console.log('res: ', res)
   }
-
   return (
     <header className={`${styles.header} mainLayout`}>
       <div className={styles.header__content}>
@@ -36,9 +35,9 @@ export default function Header () {
         <div className={styles.header__dropdown}>
            {globalStore.isLoadingAuth
              ? 'loading...'
-             : !globalStore.isLoggedIn
-                 ? <Link href={'/login'}>Login</Link>
-                 : <Dropdown text={globalStore.username } handleClick={handleLogOutClick} />
+             : globalStore.isLoggedIn
+               ? <Dropdown text={globalStore.username } handleClick={handleLogOutClick} />
+               : <Link href={'/login'}>Login</Link>
            }
         </div>
       </div>
