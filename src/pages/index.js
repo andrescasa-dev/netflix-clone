@@ -6,21 +6,21 @@ import Header from '@/components/organisms/Header'
 import MoviesSection from '@/components/molecules/MoviesSection'
 import checkUserAuth from '@/lib/ssr/checkUserAuth'
 import useLoadGlobalStoreAuth from '@/hooks/useLoadGlobalStoreAuth'
-import { getPopularVideos, getVideosByIds } from '@/lib/vimeoLocalSDK'
+import { getPopularVideos, getVideosByCategory, getVideosByIds } from '@/lib/vimeoLocalSDK'
 import getWatchedVideoIdsByUser from '@/lib/database/getWatchedVideosByUser'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
 export async function getServerSideProps (context) {
   try {
-    const horrorVideos = []
-    const comedyVideos = []
-    const documentaryVideos = []
-    const popularVideos = await getPopularVideos()
-    // const horrorVideos = await getVideosByCategory('horror')
-    // const comedyVideos = await getVideosByCategory('comedy')
-    // const documentaryVideos = await getVideosByCategory('documentary')
+    // const horrorVideos = []
+    // const comedyVideos = []
+    // const documentaryVideos = []
     // const popularVideos = await getPopularVideos()
+    const horrorVideos = await getVideosByCategory('horror')
+    const comedyVideos = await getVideosByCategory('comedy')
+    const documentaryVideos = await getVideosByCategory('documentary')
+    const popularVideos = await getPopularVideos()
 
     const { userEmail, userJWT, isLoggedIn } = checkUserAuth(context.req.cookies)
     const watchedVideos = isLoggedIn ? await getVideosByIds(await getWatchedVideoIdsByUser(userJWT)) : []

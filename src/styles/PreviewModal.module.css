@@ -1,9 +1,16 @@
 .modal {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   gap: 2rem;
+  height: 60vh;
   width: 30vw;
   color: white;
+}
+
+.modal__info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .modal__info {
@@ -12,23 +19,14 @@
   gap: 1rem;
 }
 
-.modal__stats {
+.modal__tags {
   display: flex;
-  justify-content: space-between;
+  gap: 0.6em;
   align-items: center;
   align-self: stretch;
 }
 
-.modal__stats__buttons {
-  display: flex;
-  align-items: flex-start;
-  gap: 2rem;
-}
-
-.modal__stats__views {
-  display: flex;
-  padding: 0.6rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.6rem;
+.modal__description{
+  flex-grow: 1;
+  overflow: scroll;
 }

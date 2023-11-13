@@ -13,6 +13,7 @@ export function useModal () {
   }
 
   const closeModal = () => {
+    console.log('click on close')
     setIsOpenModal(false)
   }
 
@@ -22,10 +23,10 @@ export function useModal () {
         if (isOpenModal) {
           document.body.classList.add('no-scroll')
           modal.current.showModal()
-        } else {
-          document.body.classList.remove('no-scroll')
-          modal.current.close()
         }
+      }
+      return () => {
+        document.body.classList.remove('no-scroll')
       }
     }, [isOpenModal])
 

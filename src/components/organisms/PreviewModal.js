@@ -2,9 +2,9 @@ import styles from '@/styles/PreviewModal.module.css'
 import Tag from '../atoms/Tag'
 import Text from '../atoms/Text'
 import Button from '../atoms/Button'
-import Icon from '../atoms/Icon'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import PreviewModalSkeleton from '../Skeletons/PreviewModalSkeleton'
 
 export default function PreviewModal ({ movieId }) {
   const [movie, setMovie] = useState(null)
@@ -17,38 +17,24 @@ export default function PreviewModal ({ movieId }) {
     fetching()
   }, [])
 
-  const shortenText = (text) => {
-    if (!text) return text
-    const maxCharacters = 300
-    if (text.length > maxCharacters) {
-      const shortText = text.slice(0, maxCharacters)
-      const lastPointIndex = shortText.lastIndexOf('.')
-      return lastPointIndex !== -1 ? shortText.slice(0, lastPointIndex + 1) : shortText
-    }
-    return text
-  }
+  if (movie === null) return <PreviewModalSkeleton />
 
   return (
     <article className={styles.modal}>
       <Text type='title' content={movie?.title} />
-      <div>
+      <div className={styles['modal__info-wrapper']}>
         <div className={styles.modal__info}>
           <Text type='spaced' content={movie?.publishTime} />
           <Text type='spaced' content={movie?.duration} />
+          <Text type='spaced' content={`Content: ${movie?.rating}`} />
+        </div>
+        <Text type='spaced' content={`By ${movie?.channelTitle}`} />
+        <div className={styles.modal__tags}>
           <Tag text={movie?.definition.toUpperCase()} />
-          {movie?.hasCaption && <Tag text={'CC'} />}
           <Tag text={movie?.category} />
         </div>
-        <Text type='normal' content={`Producido por: ${movie?.channelTitle}`} />
       </div>
-      <Text type='relevant' content={shortenText(movie?.description)} />
-      <div className={styles.modal__stats}>
-        <div className={styles.modal__stats__views}>
-          {/* to do: make this a component icon */}
-          <Icon url={'/eye.svg'} alt='views' />
-          <Text type='normal' content={movie?.viewCount} />
-        </div>
-      </div>
+      <Text className={styles.modal__description} type='relevant' content={movie?.description} />
       <Link className={styles.modal__btn} href={`/movies/${movieId}?title=${encodeURI(movie?.title)}`}>
         <Button
           text={'Play'}

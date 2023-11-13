@@ -1,3 +1,5 @@
+import formatDate from './formatDate'
+import formatTime from './formatTime'
 import getParamUri from './getParamUir'
 import { fetchVimeo } from './getYouTubeVideos'
 
@@ -62,41 +64,29 @@ export const getPopularVideos = async () => {
   return videos
 }
 
-/*
-  {
-    title, x
-    id, x
-    description, x
-    channelTitle,
-    definition,
-    hasCaption,
-    viewCount: parseViewCount(viewCount), x
-    publishTime: parsePublishedTime(publishedAt), x
-    duration: parseDuration(duration), x
-    category: parseCategory(categoryId) x
-  }
-  */
 /* eslint-disable camelcase */
 const detailMinifier = (video) => {
-  const { uri, user, name, stats, release_time, categories, ...rest } = video
+  const { uri, user, name, stats, release_time, categories, duration, content_rating_class, ...rest } = video
   return {
     id: uri.split('/')[2],
     title: name,
-    publishTime: release_time,
-    viewCount: stats.plays,
+    publishTime: formatDate(release_time),
     channelTitle: user.name,
     category: categories[0].name,
     definition: 'hd',
     hasCaption: true,
+    rating: content_rating_class,
+    duration: formatTime(duration),
     ...rest
   }
 }
+
 export const getVideoDetail = async (id) => {
   console.log('getVideoDetail with id', id)
   if (process.env.NEXT_PUBLIC_ACTIVE_API === 'false') return []
 
   const queryParams = getParamUri({
-    fields: ['uri', 'name', 'description', 'stats', 'release_time', 'duration', 'categories', 'user']
+    fields: ['uri', 'name', 'description', 'content_rating_class', 'release_time', 'duration', 'categories.name', 'user.name']
   })
   const url = `https://api.vimeo.com/videos/${id}?${queryParams}`
   const video = await fetchVimeo(url)

@@ -1,6 +1,6 @@
 import styles from '@/styles/MovieCard.module.css'
 import Image from 'next/image'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import PreviewModal from '../organisms/PreviewModal'
 import { useModal } from './Modal'
 
@@ -24,7 +24,7 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
   return (
     <article className={`${styles.card} ${sizeMap[`${size}`]} ${hoverEffect}`} >
       <Modal>
-          <PreviewModal movieId={ id } />
+        <PreviewModal movieId={ id } />
       </Modal>
       <div onClick={() => openModal()} >
         <Image
