@@ -48,7 +48,7 @@ export function useModal () {
         </div>
         <div className={styles.modal__close_btn_container}>
           <button onClick={() => closeModal()}>
-            <Icon url={'/exit.svg'} alt='views' />
+            <Icon size='small' url={'/exit.svg'} alt='views' />
           </button>
         </div>
         {children}

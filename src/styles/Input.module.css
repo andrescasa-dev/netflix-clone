@@ -12,12 +12,16 @@
   padding: .8em;
   background-color: var(--gray40);
   color: var(--white10);
-  border: 2px solid var(--white30);
+  border: 2px solid var(--white20);
   border-radius: .4em;
 }
 
 .input input::placeholder {
   color: var(--gray10);
+}
+
+.input:focus-within{
+  border: 2px solid var(--white30);
 }
 
 .input-wrapper__error {

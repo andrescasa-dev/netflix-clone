@@ -1,14 +1,16 @@
 .modal {
   padding: 0;
   background-color: black;
-  padding: 3rem 4rem;
   position: fixed;
   border: 0px;
   border-radius: .4rem;
 }
 
 .modal__close_btn_container {
+  position: absolute;
   display: flex;
+  right: 2em;
+  top: 2em;
   justify-content: flex-end;
 }
 

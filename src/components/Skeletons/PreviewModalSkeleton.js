@@ -1,24 +1,26 @@
 import styles from '@/styles/PreviewModal.module.css'
-import PlaceHolder from './PlaceHolder'
+import Skeleton from './Skeleton'
 
 export default function PreviewModalSkeleton () {
   return (
-    <article className={styles.modal}>
-      <PlaceHolder />
-      <div className={styles['modal__info-wrapper']}>
-        <div className={styles.modal__info}>
-          <PlaceHolder />
-          <PlaceHolder />
-          <PlaceHolder />
+    <article className={styles.preview}>
+      <Skeleton height={'3em'} />
+      <div className={styles['preview__info-wrapper']}>
+        <div className={styles.preview__info}>
+          <Skeleton width={'6em'} />
+          <Skeleton width={'3em'}/>
+          <Skeleton width={'5em'}/>
         </div>
-        <PlaceHolder />
-        <div className={styles.modal__tags}>
-          <PlaceHolder />
-          <PlaceHolder />
+        <Skeleton />
+        <div className={styles.preview__tags}>
+          <Skeleton width={'8em'}/>
+          <Skeleton width={'4em'}/>
+          <Skeleton width={'5em'}/>
+          <Skeleton width={'5em'}/>
         </div>
       </div>
-      <PlaceHolder className={styles.modal__description} />
-      <PlaceHolder />
+      <Skeleton className={styles.preview__description} />
+      <Skeleton height={'3em'} />
     </article>
   )
 }

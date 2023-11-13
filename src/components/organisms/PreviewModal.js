@@ -20,22 +20,21 @@ export default function PreviewModal ({ movieId }) {
   if (movie === null) return <PreviewModalSkeleton />
 
   return (
-    <article className={styles.modal}>
+    <article className={styles.preview}>
       <Text type='title' content={movie?.title} />
-      <div className={styles['modal__info-wrapper']}>
-        <div className={styles.modal__info}>
+      <div className={styles['preview__info-wrapper']}>
+        <div className={styles.preview__info}>
           <Text type='spaced' content={movie?.publishTime} />
           <Text type='spaced' content={movie?.duration} />
           <Text type='spaced' content={`Content: ${movie?.rating}`} />
         </div>
         <Text type='spaced' content={`By ${movie?.channelTitle}`} />
-        <div className={styles.modal__tags}>
-          <Tag text={movie?.definition.toUpperCase()} />
-          <Tag text={movie?.category} />
+        <div className={styles.preview__tags}>
+          {movie?.category.map((cat, i) => <Tag key={i} text={cat.name} />)}
         </div>
       </div>
-      <Text className={styles.modal__description} type='relevant' content={movie?.description} />
-      <Link className={styles.modal__btn} href={`/movies/${movieId}?title=${encodeURI(movie?.title)}`}>
+      <Text className={styles.preview__description} type='relevant' content={movie?.description} />
+      <Link className={styles.preview__btn} href={`/movies/${movieId}?title=${encodeURI(movie?.title)}`}>
         <Button
           text={'Play'}
           hasIcon={true}

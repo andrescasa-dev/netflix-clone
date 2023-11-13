@@ -72,9 +72,7 @@ const detailMinifier = (video) => {
     title: name,
     publishTime: formatDate(release_time),
     channelTitle: user.name,
-    category: categories[0].name,
-    definition: 'hd',
-    hasCaption: true,
+    category: categories,
     rating: content_rating_class,
     duration: formatTime(duration),
     ...rest

@@ -1,4 +1,4 @@
-import styles from '@/styles/LoginModal.module.css'
+import styles from '@/styles/LoginForm.module.css'
 import Input from '../atoms/Input'
 import Button from '../atoms/Button'
 import magic from '@/lib/magicClient'
