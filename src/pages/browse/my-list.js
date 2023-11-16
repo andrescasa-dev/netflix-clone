@@ -34,7 +34,7 @@ export default function MyList ({ likedVideos, auth }) {
         ? <p>loading...</p>
         : globalStore.isLoggedIn
           ? likedVideos.length > 0
-            ? <MoviesSection isWrap={true} videos={likedVideos} sizeOfCards='big' subtitle='My List' />
+            ? <MoviesSection isWrap={true} videos={likedVideos} sizeOfCards='big' inheritHeight={false} subtitle='My List' />
             : <Text content={"you don't have any like videos yet"} />
           : <MessageToLogin />
       }
@@ -42,3 +42,4 @@ export default function MyList ({ likedVideos, auth }) {
     </>
   )
 }
+

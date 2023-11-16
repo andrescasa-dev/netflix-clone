@@ -2,25 +2,27 @@
   position: relative;
   border-radius: .4em;
   overflow: hidden;
-  width: 218px;
-  height: 432px;
   transition: all .2s cubic-bezier(.28, .61, .9, 1.16);
   z-index: 1;
 }
 
 .card--big {
-  width: 218px;
-  height: 432px;
+  width: 12em;
+  height: 27em;
 }
 
 .card--mid {
-  width: 158px;
-  height: 280px;
+  width: 10em;
+  height: 18em;
 }
 
 .card--small {
-  width: 300px;
-  height: 170px;
+  width: 18em;
+  height: 10.6em;
+}
+
+.card--inherit-height {
+  height: auto;
 }
 
 .hoverEffect:hover {

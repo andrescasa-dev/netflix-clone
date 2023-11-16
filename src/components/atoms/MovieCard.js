@@ -1,10 +1,10 @@
 import styles from '@/styles/MovieCard.module.css'
 import Image from 'next/image'
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import PreviewModal from '../organisms/PreviewModal'
 import { useModal } from './Modal'
 
-export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not found', id }) {
+export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not found', id, inheritHeight = true }) {
   const [finalImgUrl, setFinalImgUrl] = useState(imgUrl)
   const { Modal, openModal } = useModal()
 
@@ -19,10 +19,12 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
     small: styles['card--small']
   }
 
+  const inheritHeightClass = inheritHeight ? styles['card--inherit-height'] : ''
+
   const hoverEffect = id === 1 ? styles['hoverEffect--first-element'] : styles.hoverEffect
 
   return (
-    <article className={`${styles.card} ${sizeMap[`${size}`]} ${hoverEffect}`} >
+    <article className={`${styles.card} ${sizeMap[`${size}`]} ${hoverEffect} ${inheritHeightClass}`} >
       <Modal>
         <PreviewModal movieId={ id } />
       </Modal>

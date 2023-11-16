@@ -19,11 +19,23 @@
 }
 
 .movies-section__cards-container {
-  display: flex;
-  justify-content: center;
-  gap: .2em;
   width: fit-content;
+  min-width: 100vw;
   padding-block: 2em;
+  display: flex;
+  gap: .2em;
+}
+
+.movies-section__cards-container--big {
+  height: 27em;
+}
+
+.movies-section__cards-container--mid {
+  height: 18em;
+}
+
+.movies-section__cards-container--small {
+  height: 16em;
 }
 
 .movies-section__cards-container--wrap {

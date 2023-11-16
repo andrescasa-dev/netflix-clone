@@ -1,7 +1,7 @@
 export default function globalStoreReducer (store, action) {
   // store: {username, isLoading}
   const { type, payload } = action
-  console.log(`executing: ${type}`)
+  console.log(`global store reducer, executing: ${type}`)
   switch (type) {
     case 'login_user' : {
       return { isLoadingAuth: false, username: payload.username, isLoggedIn: Boolean(payload.username) }

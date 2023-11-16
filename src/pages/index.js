@@ -5,9 +5,7 @@ import Hero from '@/components/molecules/Hero'
 import Header from '@/components/organisms/Header'
 import MoviesSection from '@/components/molecules/MoviesSection'
 import useLoadGlobalStoreAuth from '@/hooks/useLoadGlobalStoreAuth'
-import { getPopularVideos, getVideosByCategory, getVideosByIds } from '@/lib/vimeoLocalSDK'
-import getWatchedVideoIdsByUser from '@/lib/database/getWatchedVideosByUser'
-import { useEffect, useState } from 'react'
+import { getPopularVideos, getVideosByCategory } from '@/lib/vimeoLocalSDK'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
@@ -32,20 +30,16 @@ export async function getStaticProps (context) {
 export default function Home ({ videos }) {
   const globalStore = useLoadGlobalStoreAuth({ isBrowserValidation: true })
 
-  const [watchedVideos, setWatchedVideos] = useState([])
-
-  const fetchingUserVideos = async () => {
+  const fetchUserVideos = async () => {
+    console.log('fetching watch recent movies')
     const response = await fetch('/api/user/watchedVideos')
-    const { videos } = await response.json()
-    console.log('user videos loaded', videos)
-    setWatchedVideos(videos)
-  }
-
-  useEffect(() => {
-    if (globalStore.isLoggedIn) {
-      fetchingUserVideos()
+    if (!response.ok) {
+      console.error('could not fetch user videos')
+      return []
     }
-  }, [])
+    const { videos } = await response.json()
+    return videos
+  }
 
   const { horrorVideos, comedyVideos, documentaryVideos, popularVideos } = videos
   return (
@@ -65,11 +59,13 @@ export default function Home ({ videos }) {
           subtitle={'A very cute dog'}
           ctaVideoId={'ma67yOdMQfs'}
         />
-        <MoviesSection sizeOfCards='big' videos={popularVideos} subtitle='Popular'/>
-        {watchedVideos?.length > 0 && <MoviesSection sizeOfCards='small' videos={watchedVideos} subtitle='Recent watched'/>}
-        <MoviesSection sizeOfCards='mid' videos={horrorVideos} subtitle='Horror'/>
-        <MoviesSection sizeOfCards='mid' videos={comedyVideos} subtitle='Comedy'/>
-        <MoviesSection sizeOfCards='mid' videos={documentaryVideos} subtitle='Documentary'/>
+        <MoviesSection subtitle='Popular' sizeOfCards='big' videos={popularVideos} />
+        { globalStore.isLoggedIn &&
+          <MoviesSection subtitle='Recent watched' sizeOfCards='small' inheritHeight={true} fetchUserVideos={fetchUserVideos}/>
+        }
+        {/* <MoviesSection subtitle='Horror' sizeOfCards='mid' videos={horrorVideos} />
+        <MoviesSection subtitle='Comedy' sizeOfCards='mid' videos={comedyVideos} />
+        <MoviesSection subtitle='Documentary' sizeOfCards='mid' videos={documentaryVideos} /> */}
       </main>
     </>
   )
