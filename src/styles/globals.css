@@ -177,7 +177,7 @@ body {
 .mainLayout {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(1em, 1fr) minmax(30em, 80em) minmax(1em, 1fr);
+  grid-template-columns: minmax(3em, 1fr) minmax(30em, 150em) minmax(3em, 1fr);
 }
 
 .mainLayout>* {
