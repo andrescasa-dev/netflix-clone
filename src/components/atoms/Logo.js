@@ -16,7 +16,7 @@ export default function Logo ({ size = 'mid' }) {
   const finalSize = sizeMap[size]
   return (
     <Link href='/'>
-      <Image src='/netflix.svg' height={finalSize.height} width={finalSize.width} alt='Netflix Logo'/>
+      <Image priority={true} src='/netflix.svg' height={finalSize.height} width={finalSize.width} alt='Netflix Logo'/>
     </Link>
   )
 }

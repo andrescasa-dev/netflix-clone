@@ -28,15 +28,15 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
       <Modal>
         <PreviewModal movieId={ id } />
       </Modal>
-      <div onClick={() => openModal()} >
-        <Image
-            fill={true}
-            objectFit='cover'
-            src={finalImgUrl}
-            alt={alt}
-            onError={handleError}
-          />
-      </div>
+      <Image
+          onClick={() => openModal()}
+          className={styles.card__image}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          fill={true}
+          src={finalImgUrl}
+          alt={alt}
+          onError={handleError}
+        />
     </article>
   )
 }

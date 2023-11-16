@@ -40,12 +40,13 @@ export function useModal () {
     return (
       <>
       {isOpenModal && createPortal(<dialog ref={modal} className={styles.modal} onKeyDown={handlePressKeyClose}>
-        <div className={styles['modal--background-image']}>
-          <Image
-            src='/signin-bg.jpeg' fill={true} objectFit='cover'
-            alt='background image'
-          />
-        </div>
+        <Image
+          priority={true}
+          className={styles['modal--background-image']}
+          src='/signin-bg.jpeg'
+          fill={true}
+          alt='background image'
+        />
         <div className={styles.modal__close_btn_container}>
           <button onClick={() => closeModal()}>
             <Icon size='small' url={'/exit.svg'} alt='views' />

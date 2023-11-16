@@ -10,3 +10,7 @@
 .hero__title {
   font-size: 3rem;
 }
+
+.hero__background {
+  object-fit: cover;
+}

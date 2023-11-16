@@ -16,6 +16,7 @@
 
 .modal--background-image {
   position: absolute;
+  object-fit: cover;
   inset: 0;
   opacity: 35%;
   z-index: -1;

@@ -15,10 +15,11 @@ export default function Hero ({ title, subtitle, imgUrl, backgroundImgUrl, ctaVi
   return (
     <div className={`${styles.hero} viewport-layout`}>
       <Image
+        className={styles.hero__background}
         fill={true}
         src={backgroundImgUrl}
+        priority={true}
         alt='background hero image'
-        objectFit='cover'
       />
       <div className={`${styles.hero__container} mainLayout`}>
         <Image src={imgUrl} height={90} width={50} alt="Netflix logo" />
