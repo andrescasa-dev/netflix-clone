@@ -8,8 +8,8 @@ export const fetchVimeo = async (url) => {
     }
   }
   const response = await fetch(url, options)
+  if (!response.ok) throw new Error(`Error fetching Vimeo API, response: ${response}`)
   const data = await response.json()
-  if (!response.ok) throw new Error(`Error fetching Vimeo API:. ${data.error}`)
   return data
 }
 

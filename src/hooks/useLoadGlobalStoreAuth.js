@@ -9,7 +9,7 @@ export default function useLoadGlobalStoreAuth (auth) {
   }
 
   const browserValidation = async () => {
-    const response = await fetch('/api/login?fields:')
+    const response = await fetch('/api/login')
     const { auth: localAuth } = await response.json()
     loadLoggedUser(localAuth)
   }

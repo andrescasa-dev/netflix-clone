@@ -2,10 +2,10 @@ import Head from 'next/head'
 // eslint-disable-next-line camelcase
 import { Roboto_Slab } from 'next/font/google'
 import Hero from '@/components/molecules/Hero'
-import Header from '@/components/organisms/Header'
 import MoviesSection from '@/components/molecules/MoviesSection'
 import useLoadGlobalStoreAuth from '@/hooks/useLoadGlobalStoreAuth'
 import { getPopularVideos, getVideosByCategory } from '@/lib/vimeoLocalSDK'
+import Header from '@/components/organisms/Header'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
@@ -35,7 +35,7 @@ export default function Home ({ videos }) {
     const response = await fetch('/api/user/watchedVideos')
     if (!response.ok) {
       console.error('could not fetch user videos')
-      return []
+      return fetchUserVideos()
     }
     const { videos } = await response.json()
     return videos
@@ -63,9 +63,9 @@ export default function Home ({ videos }) {
         { globalStore.isLoggedIn &&
           <MoviesSection subtitle='Recent watched' sizeOfCards='small' inheritHeight={true} fetchUserVideos={fetchUserVideos}/>
         }
-        {/* <MoviesSection subtitle='Horror' sizeOfCards='mid' videos={horrorVideos} />
+        <MoviesSection subtitle='Horror' sizeOfCards='mid' videos={horrorVideos} />
         <MoviesSection subtitle='Comedy' sizeOfCards='mid' videos={comedyVideos} />
-        <MoviesSection subtitle='Documentary' sizeOfCards='mid' videos={documentaryVideos} /> */}
+        <MoviesSection subtitle='Documentary' sizeOfCards='mid' videos={documentaryVideos} />
       </main>
     </>
   )
