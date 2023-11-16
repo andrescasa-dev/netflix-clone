@@ -4,43 +4,50 @@ import { Roboto_Slab } from 'next/font/google'
 import Hero from '@/components/molecules/Hero'
 import Header from '@/components/organisms/Header'
 import MoviesSection from '@/components/molecules/MoviesSection'
-import checkUserAuth from '@/lib/ssr/checkUserAuth'
 import useLoadGlobalStoreAuth from '@/hooks/useLoadGlobalStoreAuth'
 import { getPopularVideos, getVideosByCategory, getVideosByIds } from '@/lib/vimeoLocalSDK'
 import getWatchedVideoIdsByUser from '@/lib/database/getWatchedVideosByUser'
+import { useEffect, useState } from 'react'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
-export async function getServerSideProps (context) {
+export async function getStaticProps (context) {
   try {
-    // const horrorVideos = []
-    // const comedyVideos = []
-    // const documentaryVideos = []
-    // const popularVideos = await getPopularVideos()
     const horrorVideos = await getVideosByCategory('horror')
     const comedyVideos = await getVideosByCategory('comedy')
     const documentaryVideos = await getVideosByCategory('documentary')
     const popularVideos = await getPopularVideos()
 
-    const { userEmail, userJWT, isLoggedIn } = checkUserAuth(context.req.cookies)
-    const watchedVideos = isLoggedIn ? await getVideosByIds(await getWatchedVideoIdsByUser(userJWT)) : []
+    const videos = { horrorVideos, comedyVideos, documentaryVideos, popularVideos }
 
-    const auth = { isLoggedIn, userEmail }
-    const videos = { horrorVideos, comedyVideos, documentaryVideos, popularVideos, watchedVideos }
-
-    return { props: { videos, auth } }
+    return { props: { videos }, revalidate: 60 }
   } catch (error) {
-    console.error('error in SSR home')
+    console.error('error in ISR home')
     console.error(error)
-    const videos = { horrorVideos: [], comedyVideos: [], documentaryVideos: [], popularVideos: [], watchedVideos: [] }
-    const auth = { isLoggedIn: false }
-    return { props: { videos, auth } }
+    const videos = { horrorVideos: [], comedyVideos: [], documentaryVideos: [], popularVideos: [] }
+    return { props: { videos } }
   }
 }
 
-export default function Home ({ videos, auth }) {
-  useLoadGlobalStoreAuth(auth)
-  const { horrorVideos, comedyVideos, documentaryVideos, popularVideos, watchedVideos } = videos
+export default function Home ({ videos }) {
+  const globalStore = useLoadGlobalStoreAuth({ isBrowserValidation: true })
+
+  const [watchedVideos, setWatchedVideos] = useState([])
+
+  const fetchingUserVideos = async () => {
+    const response = await fetch('/api/user/watchedVideos')
+    const { videos } = await response.json()
+    console.log('user videos loaded', videos)
+    setWatchedVideos(videos)
+  }
+
+  useEffect(() => {
+    if (globalStore.isLoggedIn) {
+      fetchingUserVideos()
+    }
+  }, [])
+
+  const { horrorVideos, comedyVideos, documentaryVideos, popularVideos } = videos
   return (
     <>
       <Head>

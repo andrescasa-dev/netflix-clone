@@ -2,6 +2,7 @@ import createUser from '@/lib/database/createUser'
 import getUsersByIssuer from '@/lib/database/getUsersByIssuer'
 import { magicAdmin } from '@/lib/magicServer'
 import { setAuthCookie } from '@/lib/setAuthCookie'
+import checkUserAuth from '@/lib/ssr/checkUserAuth'
 import jwt from 'jsonwebtoken'
 
 export default async function login (req, res) {
@@ -44,6 +45,9 @@ export default async function login (req, res) {
       console.error(`Something went wrong in login api: ${error.message} data: ${JSON.stringify(error.data)}`)
       return res.status(500).json({ couldLogin: false, error: "login doesn't works" })
     }
+  } else if (req.method === 'GET') {
+    const { userEmail, isLoggedIn } = checkUserAuth(req.cookies)
+    return res.status(200).json({ auth: { isLoggedIn, userEmail } })
   } else {
     console.error('method not allowed')
     return res.status(405).json({ error: 'method not allowed' })
