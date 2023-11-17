@@ -18,11 +18,10 @@ export default function PreviewModalSkeleton () {
           <Skeleton width={'8em'}/>
           <Skeleton width={'4em'}/>
           <Skeleton width={'5em'}/>
-          <Skeleton width={'11em'}/>
+          <Skeleton width={'16em'}/>
         </div>
       </div>
-      
-
+      <Skeleton height={'6em'} />
     </article>
   )
 }

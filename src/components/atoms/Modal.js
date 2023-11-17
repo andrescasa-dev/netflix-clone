@@ -42,6 +42,7 @@ export function useModal () {
       {isOpenModal && createPortal(<dialog ref={modal} className={styles.modal} onKeyDown={handlePressKeyClose}>
         <Image
           priority={true}
+          sizes='(min-width: 500px) 50vw, 100vw'
           className={styles['modal--background-image']}
           src='/signin-bg.jpeg'
           fill={true}

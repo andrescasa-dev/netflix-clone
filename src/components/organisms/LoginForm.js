@@ -2,7 +2,7 @@ import styles from '@/styles/LoginForm.module.css'
 import Input from '../atoms/Input'
 import Button from '../atoms/Button'
 import magic from '@/lib/magicClient'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useGlobalStore } from '@/stores/GlobalStore'
 
 export default function LoginForm ({ afterSuccessfullyLogin, afterUnsuccessfullyLogin, beforeShowUIMagic }) {
@@ -61,11 +61,27 @@ export default function LoginForm ({ afterSuccessfullyLogin, afterUnsuccessfully
     setIsLoading(false)
   }
 
+  const keyPressSubmit = async (e) => {
+    if (e.key === 'Enter' && !submitRef.current.disabled) {
+      handleSubmit(e)
+    }
+  }
+
+  useEffect(() => {
+    if (isLoading) {
+      inputRef.current.disabled = true
+      submitRef.current.disabled = true
+    } else {
+      inputRef.current.disabled = false
+      submitRef.current.disabled = false
+    }
+  }, [isLoading])
+
   return (
-    <div onClick={handleRedirectFocus} className={styles['login-form']}>
+    <form onKeyUp={keyPressSubmit} onClick={handleRedirectFocus} className={styles['login-form']}>
       <h1 className={styles['login-form__title']} >Log In</h1>
       <Input regex={emailRegex.current} inputRef={inputRef} onInputValidation={onInputValidation} onEmptyInput={onEmptyInput}/>
       <Button submitRef={submitRef} text={isLoading ? 'loading...' : 'Log In'} isFullWidth={true} handleClick={handleSubmit}/>
-    </div>
+    </form>
   )
 }

@@ -13,10 +13,10 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
     setFinalImgUrl(process.env.NEXT_PUBLIC_DEFAULT_IMG_URL)
   }
 
-  const sizeMap = {
-    big: styles['card--big'],
-    mid: styles['card--mid'],
-    small: styles['card--small']
+  const resolution = {
+    big: '40vw',
+    mid: '35vw',
+    small: '35vw'
   }
 
   const inheritHeightClass = inheritHeight ? styles['card--inherit-height'] : ''
@@ -24,14 +24,14 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
   const hoverEffect = id === 1 ? styles['hoverEffect--first-element'] : styles.hoverEffect
 
   return (
-    <article className={`${styles.card} ${sizeMap[`${size}`]} ${hoverEffect} ${inheritHeightClass}`} >
+    <article className={`${styles.card} ${styles[`card--${size}`]} ${hoverEffect} ${inheritHeightClass}`} >
       <Modal>
         <PreviewModal movieId={ id } />
       </Modal>
       <Image
           onClick={() => openModal()}
           className={styles.card__image}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes={`(min-width: 500px) ${resolution[size]}, 80vw`}
           fill={true}
           src={finalImgUrl}
           alt={alt}
