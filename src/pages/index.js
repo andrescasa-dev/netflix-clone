@@ -57,7 +57,7 @@ export default function Home ({ videos }) {
           imgUrl='/logo.webp'
           title={'Clifford the red dog'}
           subtitle={'A very cute dog'}
-          ctaVideoId={'ma67yOdMQfs'}
+          ctaVideoId={'569069957'}
         />
         <MoviesSection subtitle='Popular' sizeOfCards='big' videos={popularVideos} />
         { globalStore.isLoggedIn &&

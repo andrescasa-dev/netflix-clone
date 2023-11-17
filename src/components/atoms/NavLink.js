@@ -1,10 +1,19 @@
-import Link from 'next/link'
 import styles from '@/styles/NavLink.module.css'
+import Icon from './Icon'
+import { useRouter } from 'next/router'
 
-export default function NavLink ({ text, href }) {
+export default function NavLink ({ text, href, icon, onClick }) {
+  const router = useRouter()
+
+  const handleClick = (e) => {
+    onClick && onClick(e)
+    router.push(href)
+  }
+
   return (
-    <Link className={styles['nav-link']} href={href}>
+    <a className={styles['nav-link']} onClick={handleClick}>
+      {icon && <Icon url={icon} alt={text} size='small'/>}
       {text}
-    </Link>
+    </a>
   )
 }

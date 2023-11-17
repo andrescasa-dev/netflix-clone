@@ -2,15 +2,29 @@
   position: relative;
   padding-block: 5em 9em;
 }
-  
+
 .hero__container {
-  gap: 2em;
+  row-gap: 2em;
 }
 
 .hero__title {
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
 .hero__background {
   object-fit: cover;
+}
+
+.hero__cta {
+  max-width: none;
+}
+
+@media (min-width: 500px) {
+  .hero__title {
+    font-size: 3rem;
+  }
+
+  .hero__cta {
+    width: 9em;
+  }
 }
