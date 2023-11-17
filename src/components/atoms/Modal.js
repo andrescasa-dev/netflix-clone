@@ -47,12 +47,12 @@ export function useModal () {
           fill={true}
           alt='background image'
         />
+        {children}
         <div className={styles.modal__close_btn_container}>
           <button onClick={() => closeModal()}>
             <Icon size='small' url={'/exit.svg'} alt='views' />
           </button>
         </div>
-        {children}
       </dialog>, document.body)}
       </>
     )

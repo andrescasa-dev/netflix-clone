@@ -23,27 +23,28 @@ export default function PreviewModal ({ movieId }) {
     <>
     <article className={styles.preview}>
       <Text type='title' content={movie?.title} />
+      <Text type='spaced' content={`By ${movie?.channelTitle}`} />
+      <Link className={styles.modal__cta} href={`/movies/${movieId}?title=${encodeURI(movie?.title)}`}>
+        <Button
+          text={'Play'}
+          hasIcon={true}
+          iconUrl={'/play_icon.svg'}
+          isFullWidth={true}
+        />
+      </Link>
       <div className={styles['preview__info-wrapper']}>
         <div className={styles.preview__info}>
           <Text type='spaced' content={movie?.publishTime} />
           <Text type='spaced' content={movie?.duration} />
           <Text type='spaced' content={`Content: ${movie?.rating}`} />
         </div>
-        <Text type='spaced' content={`By ${movie?.channelTitle}`} />
+
         <div className={styles.preview__tags}>
           {movie?.category.map((cat, i) => <Tag key={i} text={cat.name} />)}
         </div>
       </div>
       <Text className={styles.preview__description} type='relevant' content={movie?.description} isExpandable={true} />
     </article>
-    <Link className={styles.modal__cta} href={`/movies/${movieId}?title=${encodeURI(movie?.title)}`}>
-      <Button
-        text={'Play'}
-        hasIcon={true}
-        iconUrl={'/play_icon.svg'}
-        isFullWidth={true}
-      />
-    </Link>
     </>
   )
 }

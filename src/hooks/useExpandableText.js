@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function useExpandableText (content) {
+export default function useExpandableText (content = '') {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleExpandable = () => {
