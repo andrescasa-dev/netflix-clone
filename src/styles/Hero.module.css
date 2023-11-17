@@ -13,6 +13,7 @@
 
 .hero__background {
   object-fit: cover;
+  object-position: center top;
 }
 
 .hero__cta {

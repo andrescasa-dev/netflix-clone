@@ -1,7 +1,8 @@
 .button{
+  flex-shrink: 0;
   background-color: white;
   display: flex;
-  padding: 0.5rem;
+  padding: 0.5em;
   gap: 0.6rem;
   border-radius: 100%;
 }
