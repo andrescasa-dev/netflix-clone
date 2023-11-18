@@ -4,7 +4,7 @@ import { useState } from 'react'
 import PreviewModal from '../organisms/PreviewModal'
 import { useModal } from './Modal'
 
-export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not found', id, inheritHeight = true }) {
+export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not found', id, inheritHeight = true, imgBase64 }) {
   const [finalImgUrl, setFinalImgUrl] = useState(imgUrl)
   const { Modal, openModal } = useModal()
 
@@ -20,7 +20,6 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
   }
 
   const inheritHeightClass = inheritHeight ? styles['card--inherit-height'] : ''
-
   const hoverEffect = id === 1 ? styles['hoverEffect--first-element'] : styles.hoverEffect
 
   return (
@@ -36,6 +35,8 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
           src={finalImgUrl}
           alt={alt}
           onError={handleError}
+          placeholder='blur'
+          blurDataURL={imgBase64}
         />
     </article>
   )

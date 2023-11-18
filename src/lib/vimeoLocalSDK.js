@@ -1,14 +1,25 @@
+import fetchVimeo from './fetchVimeo'
 import formatDate from './formatDate'
 import formatTime from './formatTime'
 import getParamUri from './getParamUir'
-import { fetchVimeo } from './getYouTubeVideos'
+import { getPlaiceholder } from 'plaiceholder'
 
-const minifyVimeoVideo = ({ uri, name, pictures }) => {
+const getBase64Image = async (imgUrl) => {
+  console.log('imgUrl: ', imgUrl)
+  const response = await fetch(imgUrl)
+  const buffer = Buffer.from(await response.arrayBuffer())
+  const { base64 } = await getPlaiceholder(buffer)
+  return base64
+}
+
+const minifyVimeoVideo = async ({ uri, name, pictures }) => {
+  const imgBase64 = await getBase64Image(pictures.base_link)
   return {
     id: uri.split('/')[2],
     imgAlt: name,
     title: name,
-    imgUrl: pictures.base_link
+    imgUrl: pictures.base_link,
+    imgBase64
   }
 }
 
@@ -28,7 +39,7 @@ export const getVideosByIds = async (videos) => {
   const watchedVideosReordered = uriArr.map((uri) => {
     return data.find((video) => video.uri === uri)
   })
-  const minifiedWatchedVideos = watchedVideosReordered.map(minifyVimeoVideo)
+  const minifiedWatchedVideos = await Promise.all(watchedVideosReordered.map(minifyVimeoVideo))
   return minifiedWatchedVideos
 }
 
@@ -43,8 +54,9 @@ export const getVideosByCategory = async (category) => {
     per_page: process.env.NEXT_PUBLIC_VIDEO_PER_PAGE
   })
   const url = `https://api.vimeo.com/categories/${category}/videos?${queryParams}`
-  const data = await fetchVimeo(url)
-  const videos = data.data.map(minifyVimeoVideo)
+  const { data: videosData } = await fetchVimeo(url)
+  const videos = await Promise.all(videosData.map(minifyVimeoVideo))
+  console.log('videos: ', videos)
   return videos
 }
 
@@ -59,8 +71,8 @@ export const getPopularVideos = async () => {
     per_page: process.env.NEXT_PUBLIC_VIDEO_PER_PAGE
   })
   const url = `https://api.vimeo.com/videos/?${queryParams}`
-  const data = await fetchVimeo(url)
-  const videos = data.data.map(minifyVimeoVideo)
+  const { data: videosData } = await fetchVimeo(url)
+  const videos = await Promise.all(videosData.map(minifyVimeoVideo))
   return videos
 }
 

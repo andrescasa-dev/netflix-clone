@@ -1,4 +1,4 @@
-import { getYouTubeVideos } from './getYouTubeVideos'
+import { getYouTubeVideos } from './fetchVimeo'
 
 export const getPopularVideosByLocation = async (coords) => {
   const [lat, lon] = coords // '%2C'
