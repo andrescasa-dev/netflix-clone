@@ -5,7 +5,6 @@ import getParamUri from './getParamUir'
 import { getPlaiceholder } from 'plaiceholder'
 
 const getBase64Image = async (imgUrl) => {
-  console.log('imgUrl: ', imgUrl)
   const response = await fetch(imgUrl)
   const buffer = Buffer.from(await response.arrayBuffer())
   const { base64 } = await getPlaiceholder(buffer)
@@ -56,7 +55,6 @@ export const getVideosByCategory = async (category) => {
   const url = `https://api.vimeo.com/categories/${category}/videos?${queryParams}`
   const { data: videosData } = await fetchVimeo(url)
   const videos = await Promise.all(videosData.map(minifyVimeoVideo))
-  console.log('videos: ', videos)
   return videos
 }
 

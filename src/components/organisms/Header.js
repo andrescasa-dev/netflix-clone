@@ -4,6 +4,7 @@ import Dropdown from '@/components/molecules/Dropdown'
 import styles from '@/styles/Header.module.css'
 import { useGlobalStore } from '@/stores/GlobalStore'
 import Link from 'next/link'
+import LoadSpinner from '../molecules/LoadSpinner'
 
 export default function Header () {
   const { globalStore, dispatchGlobalStore } = useGlobalStore()
@@ -19,17 +20,16 @@ export default function Header () {
   }
 
   return (
-    <header className={`${styles.header} mainLayout`}>
+    <header className={`${styles.header} mainLayout mainLayout--mobile-brake`}>
       <div className={styles['header-mobile-menu']}>
         <NavLink text='Home' href='/' icon='/home.svg' />
         <NavLink text='Favorites' href='/browse/my-list' icon='/heart.svg'/>
         {globalStore.isLoadingAuth
-          ? 'loading...'
+          ? <LoadSpinner size='small' />
           : globalStore.isLoggedIn
             ? <NavLink text='Log out' href='/login' icon='/log_out.svg' onClick={handleLogOutClick}/>
             : <NavLink text='Log in' href='/login' icon='/user.svg'/>
         }
-
       </div>
 
       <div className={styles['header-top-bar']}>
@@ -38,7 +38,7 @@ export default function Header () {
         <NavLink text='Favorites' href='/browse/my-list'/>
         <div className={styles.header__dropdown}>
            {globalStore.isLoadingAuth
-             ? 'loading...'
+             ? <LoadSpinner size='small' />
              : globalStore.isLoggedIn
                ? <Dropdown text={globalStore.username}>
                   <NavLink text='Log out' href='/login' onClick={handleLogOutClick}/>
