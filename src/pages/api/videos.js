@@ -7,6 +7,7 @@ export default async function (req, res) {
       const video = await getVideoDetail(id)
       res.status(200).send({ video })
     } catch (error) {
+      console.error('query user video data error:', error)
       res.status(500).send({ error: 'error while fetching api video provider' })
     }
   } else {

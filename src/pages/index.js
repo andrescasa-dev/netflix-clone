@@ -9,7 +9,7 @@ import Header from '@/components/organisms/Header'
 
 const robotSlab = Roboto_Slab({ subsets: ['latin'] })
 
-export async function getStaticProps (context) {
+export async function getStaticProps () {
   try {
     const horrorVideos = await getVideosByCategory('horror')
     const comedyVideos = await getVideosByCategory('comedy')
@@ -18,7 +18,7 @@ export async function getStaticProps (context) {
 
     const videos = { horrorVideos, comedyVideos, documentaryVideos, popularVideos }
 
-    return { props: { videos }, revalidate: 60 }
+    return { props: { videos }, revalidate: 3600 }
   } catch (error) {
     console.error('error in ISR home')
     console.error(error)
@@ -28,7 +28,7 @@ export async function getStaticProps (context) {
 }
 
 export default function Home ({ videos }) {
-  const globalStore = useLoadGlobalStoreAuth({ isBrowserValidation: true })
+  const globalStore = useLoadGlobalStoreAuth({ willGetAuthFromApi: true })
 
   const fetchUserVideos = async () => {
     console.log('fetching watch recent movies')

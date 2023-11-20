@@ -1,25 +1,27 @@
 import { useGlobalStore } from '@/stores/GlobalStore'
 import { useEffect } from 'react'
 
-export default function useLoadGlobalStoreAuth (auth) {
+export default function useLoadGlobalStoreAuth (clientAuth) {
   const { globalStore, dispatchGlobalStore } = useGlobalStore()
 
-  const loadLoggedUser = (auth) => {
-    dispatchGlobalStore({ type: 'login_user', payload: { username: auth.userEmail } })
+  const getAuthFromApi = async () => {
+    const response = await fetch('/api/login')
+    const { auth } = await response.json()
+    return auth
   }
 
-  const browserValidation = async () => {
-    const response = await fetch('/api/login')
-    const { auth: localAuth } = await response.json()
-    loadLoggedUser(localAuth)
+  const loadAuth = (auth) => {
+    dispatchGlobalStore({ type: 'load_user', payload: auth })
   }
 
   useEffect(() => {
-    if (auth.isBrowserValidation) {
-      browserValidation()
-    } else {
-      if (globalStore.isLoadingAuth && auth.isLoggedIn) {
-        loadLoggedUser(auth)
+    if (globalStore.isLoadingAuth) {
+      if (clientAuth.willGetAuthFromApi) {
+        getAuthFromApi().then((apiAuth) => {
+          loadAuth(apiAuth)
+        })
+      } else {
+        loadAuth(clientAuth)
       }
     }
   }, [])

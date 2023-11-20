@@ -3,7 +3,6 @@ import NavLink from '@/components/atoms/NavLink'
 import Dropdown from '@/components/molecules/Dropdown'
 import styles from '@/styles/Header.module.css'
 import { useGlobalStore } from '@/stores/GlobalStore'
-import Link from 'next/link'
 import LoadSpinner from '../molecules/LoadSpinner'
 
 export default function Header () {

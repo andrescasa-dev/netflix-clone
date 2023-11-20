@@ -48,9 +48,9 @@ export default function LoginForm ({ afterSuccessfullyLogin, afterUnsuccessfully
       const email = String(inputRef.current.value)
       beforeShowUIMagic && beforeShowUIMagic()
       const couldLogin = await login(email)
-      console.log('couldLogin', couldLogin)
+      console.log(`could login: ${couldLogin}`)
       if (couldLogin) {
-        dispatchGlobalStore({ type: 'login_user', payload: { username: email } })
+        dispatchGlobalStore({ type: 'load_user', payload: { userEmail: email, isLoggedIn: true } })
         afterSuccessfullyLogin && afterSuccessfullyLogin()
       } else {
         afterUnsuccessfullyLogin && afterUnsuccessfullyLogin()
