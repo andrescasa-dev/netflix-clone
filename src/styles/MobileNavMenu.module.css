@@ -1,0 +1,28 @@
+.menu {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5248949921765581) 82%, rgba(0, 0, 0, 0)100%);
+}
+
+.menu__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .2em;
+}
+
+@media (min-width: 600px) {
+
+  .menu {
+    display: none;
+  }
+
+}

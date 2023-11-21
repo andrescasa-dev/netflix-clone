@@ -184,15 +184,6 @@ body {
   grid-column-start: 2;
 }
 
-@media (max-width: 500px) {
-  .mainLayout--mobile-brake {
-    grid-template-columns: 1fr;
-  }
-
-  .mainLayout--mobile-brake > * {
-    grid-column-start: 1;
-  }
-}
 
 /* this class broke the main layout, letting spread over the viewport */
 .viewport-layout {

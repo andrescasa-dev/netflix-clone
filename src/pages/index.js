@@ -50,8 +50,8 @@ export default function Home ({ videos }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Header />
       <main className={`mainLayout ${robotSlab.className}`}>
-        <Header />
         <Hero
           backgroundImgUrl='/clifford.webp'
           imgUrl='/logo.webp'

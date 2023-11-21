@@ -1,0 +1,29 @@
+.side-bar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  inset: 0;
+  z-index: 1;
+  background-color: rgb(27, 26, 26);  
+}
+
+.side-bar__item {
+  display: flex;
+  gap: 1em;
+}
+
+.side-bar>* {
+  padding: 2em;
+}
+
+.side-bar> :last-child {
+  margin-top: auto;
+}
+
+.side-bar__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  background-color: rgba(46, 45, 45, 0.439);
+}

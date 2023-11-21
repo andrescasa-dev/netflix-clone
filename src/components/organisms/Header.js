@@ -1,51 +1,45 @@
 import Logo from '@/components/atoms/Logo'
-import NavLink from '@/components/atoms/NavLink'
 import Dropdown from '@/components/molecules/Dropdown'
 import styles from '@/styles/Header.module.css'
 import { useGlobalStore } from '@/stores/GlobalStore'
 import LoadSpinner from '../molecules/LoadSpinner'
+import MobileNavMenu from './MobileNavMenu'
+import Link from 'next/link'
+import Text from '../atoms/Text'
+import useLogOut from '@/hooks/useLogOut'
 
 export default function Header () {
-  const { globalStore, dispatchGlobalStore } = useGlobalStore()
-
-  const handleLogOutClick = async (e) => {
-    e.preventDefault()
-    try {
-      await fetch('/api/logout')
-      dispatchGlobalStore({ type: 'logout_user' })
-    } catch (error) {
-      console.error('Error logging out', error)
-    }
-  }
+  const { globalStore } = useGlobalStore()
+  const logOut = useLogOut()
 
   return (
-    <header className={`${styles.header} mainLayout mainLayout--mobile-brake`}>
-      <div className={styles['header-mobile-menu']}>
-        <NavLink text='Home' href='/' icon='/home.svg' />
-        <NavLink text='Favorites' href='/browse/my-list' icon='/heart.svg'/>
-        {globalStore.isLoadingAuth
-          ? <LoadSpinner size='small' />
-          : globalStore.isLoggedIn
-            ? <NavLink text='Log out' href='/login' icon='/log_out.svg' onClick={handleLogOutClick}/>
-            : <NavLink text='Log in' href='/login' icon='/user.svg'/>
-        }
-      </div>
-
-      <div className={styles['header-top-bar']}>
-        <Logo />
-        <NavLink text='Home' href='/'/>
-        <NavLink text='Favorites' href='/browse/my-list'/>
-        <div className={styles.header__dropdown}>
-           {globalStore.isLoadingAuth
-             ? <LoadSpinner size='small' />
-             : globalStore.isLoggedIn
-               ? <Dropdown text={globalStore.username}>
-                  <NavLink text='Log out' href='/login' onClick={handleLogOutClick}/>
-                 </Dropdown>
-               : <NavLink text='Login' href='/login'/>
-           }
-        </div>
-      </div>
-    </header>
+    <>
+      <MobileNavMenu />
+      <header className={`mainLayout ${styles.header}`}>
+        <nav className={styles.header__nav}>
+          <Logo />
+          <Link href={'/'} className={styles.header__item}>
+            <Text type='normal' content={'Home'} />
+          </Link>
+          <Link href={'/browse/my-list'} className={styles.header__item}>
+            <Text type='normal' content={'Favorites'} />
+          </Link>
+          <div className={styles.header__dropdown}>
+              {globalStore.isLoadingAuth
+                ? <LoadSpinner size='small' />
+                : globalStore.isLoggedIn
+                  ? <Dropdown text={globalStore.username}>
+                      <button className={styles.header__item} onClick={() => { logOut() }}>
+                        <Text type='normal' content={'Log Out'} />
+                      </button>
+                    </Dropdown>
+                  : <Link href={'/login'} className={styles.header__item}>
+                      <Text type='normal' content={'Log In'} />
+                    </Link>
+              }
+          </div>
+        </nav>
+      </header>
+    </>
   )
 }
