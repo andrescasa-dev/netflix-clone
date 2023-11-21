@@ -94,7 +94,6 @@ export default function MoviePage ({ userVideoData, auth }) {
     setIsClient(true)
   }, [])
 
-  console.log('isLogged in user: ', auth)
   useLoadGlobalStoreAuth(auth)
   return (
     <>

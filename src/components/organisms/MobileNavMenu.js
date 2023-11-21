@@ -20,7 +20,7 @@ export default function MobileNavMenu () {
             <Icon url={'/home.svg'} size='small' alt={'home'} />
             <Text type='normal' content={'Home'} />
           </Link>
-          <Link href={'/browse/my-list'} className={styles.menu__item}>
+          <Link href={'/browse/favorites'} className={styles.menu__item}>
             <Icon url={'/heart.svg'} size='small' alt={'my favorites'} />
             <Text type='normal' content={'Favorites'} />
           </Link>
@@ -29,7 +29,7 @@ export default function MobileNavMenu () {
             : globalStore.isLoggedIn
               ? <button className={styles.menu__item} onClick={() => { setIsSideBarOpen(true) }}>
                   <Icon url={'/user.svg'} size='small' alt={'user'} />
-                  <Text type='normal' content={'account'} />
+                  <Text type='normal' content={'Account'} />
                 </button>
               : <Link href={'/login'} className={styles.menu__item}>
                   <Icon url={'/user.svg'} size='small' alt={'log in'} />

@@ -38,6 +38,15 @@
   height: 16em;
 }
 
-.movies-section__cards-container--wrap {
+.movies-section--wrap .scroll {
+  overflow-y: visible;
+  overflow-x: visible;
+}
+
+.movies-section--wrap .movies-section__cards-container {
+  height: auto;
+  width: 100%;
+  justify-content: center;
+  min-width: unset;
   flex-wrap: wrap;
 }

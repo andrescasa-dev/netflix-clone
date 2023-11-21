@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react'
 import { useGlobalStore } from '@/stores/GlobalStore'
 import LoadSpinner from './LoadSpinner'
 
-export default function MoviesSection ({ subtitle = 'subtitle', sizeOfCards = 'mid', videos = [], isWrap = false, hover = true, fetchUserVideos, inheritHeight = true }) {
-  const [cards, setCards] = useState(videos ?? [])
+export default function MoviesSection ({ subtitle = 'subtitle', sizeOfCards = 'mid', videos = null, isWrap = false, fetchUserVideos, inheritHeight = true }) {
+  const [cards, setCards] = useState(videos)
   const { globalStore } = useGlobalStore()
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function MoviesSection ({ subtitle = 'subtitle', sizeOfCards = 'm
     }
   }, [])
 
-  const cardComponents = cards.map((video, i) => {
+  const cardComponents = cards?.map((video, i) => {
     return (
       <MovieCard
         id={video.id}
@@ -29,13 +29,16 @@ export default function MoviesSection ({ subtitle = 'subtitle', sizeOfCards = 'm
     )
   })
 
-  const wrap = isWrap ? styles['movies-section__cards-container--wrap'] : ''
+  const wrap = isWrap ? styles['movies-section--wrap'] : ''
+
+  if (cards?.length === 0) return false
+
   return (
-    <section className={`${styles['movies-section']}`}>
+    <section className={`${styles['movies-section']} ${wrap}`}>
       <Subtitle text={subtitle} />
       <div className={styles.scroll}>
-        <div className={`${styles['movies-section__cards-container']} ${styles[`movies-section__cards-container--${sizeOfCards}`]} ${wrap} `}>
-          { cards.length > 0
+        <div className={`${styles['movies-section__cards-container']} ${styles[`movies-section__cards-container--${sizeOfCards}`]} `}>
+          { cards !== null
             ? cardComponents
             : <LoadSpinner />
           }

@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Button from '@/components/atoms/Button'
 import styles from '@/styles/Hero.module.css'
 import { useRouter } from 'next/router'
+import Text from '../atoms/Text'
 
 /* TODO
 - [] use Context for ctaVideoId?
@@ -24,7 +25,7 @@ export default function Hero ({ title, subtitle, imgUrl, backgroundImgUrl, ctaVi
       <div className={`${styles.hero__container} mainLayout`}>
         <Image src={imgUrl} height={90} width={50} alt="Netflix logo" />
         <h1 className={styles.hero__title}>{title}</h1>
-        <p>{subtitle}</p>
+        <Text content={subtitle}/>
         <Button className={styles.hero__cta} text="Play" hasIcon={true} iconUrl={'/play_icon.svg'} handleClick={handleCTACLick}/>
       </div>
     </div>

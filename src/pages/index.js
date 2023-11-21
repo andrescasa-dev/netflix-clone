@@ -35,7 +35,7 @@ export default function Home ({ videos }) {
     const response = await fetch('/api/user/watchedVideos')
     if (!response.ok) {
       console.error('could not fetch user videos')
-      return fetchUserVideos()
+      return []
     }
     const { videos } = await response.json()
     return videos
@@ -56,7 +56,7 @@ export default function Home ({ videos }) {
           backgroundImgUrl='/clifford.webp'
           imgUrl='/logo.webp'
           title={'Clifford the red dog'}
-          subtitle={'A very cute dog'}
+          subtitle={'Aventure with Clifford, a loyal friend.'}
           ctaVideoId={'569069957'}
         />
         <MoviesSection subtitle='Popular' sizeOfCards='big' videos={popularVideos} />

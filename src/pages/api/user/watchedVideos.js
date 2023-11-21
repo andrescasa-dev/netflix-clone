@@ -7,6 +7,7 @@ export default async function (req, res) {
     try {
       const { userJWT } = checkUserAuth(req.cookies)
       const videoIds = await getWatchedVideoIdsByUser(userJWT)
+      if (videoIds.length === 0) return res.status(200).send({ videos: [] })
       const videos = await getVideosByIds(videoIds)
       res.status(200).send({ videos })
     } catch (error) {

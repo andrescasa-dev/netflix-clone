@@ -122,7 +122,7 @@ meter {
   --black10: #181818;
   --black20: rgba(0, 0, 0, 0.6);
   --black30: rgb(17, 24, 39);
-  --black40: #141414;
+  --black40: rgb(20, 19, 19);
   --black50: rgb(20, 20, 20);
 
   --gray10: rgb(119, 119, 119);
@@ -184,6 +184,9 @@ body {
   grid-column-start: 2;
 }
 
+.screen-height {
+  min-height: 100vh;
+}
 
 /* this class broke the main layout, letting spread over the viewport */
 .viewport-layout {

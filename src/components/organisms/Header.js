@@ -21,7 +21,7 @@ export default function Header () {
           <Link href={'/'} className={styles.header__item}>
             <Text type='normal' content={'Home'} />
           </Link>
-          <Link href={'/browse/my-list'} className={styles.header__item}>
+          <Link href={'/browse/favorites'} className={styles.header__item}>
             <Text type='normal' content={'Favorites'} />
           </Link>
           <div className={styles.header__dropdown}>

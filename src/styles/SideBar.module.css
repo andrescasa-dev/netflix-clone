@@ -5,7 +5,7 @@
   gap: 2em;
   inset: 0;
   z-index: 1;
-  background-color: rgb(27, 26, 26);  
+  background-color: var(--black40);  
 }
 
 .side-bar__item {
@@ -25,5 +25,5 @@
   display: flex;
   justify-content: space-between;
   gap: 1em;
-  background-color: rgba(46, 45, 45, 0.439);
+  background-color: var(--gray40);
 }
