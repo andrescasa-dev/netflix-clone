@@ -9,6 +9,6 @@ export default function Icon ({ url, alt, isUpsideDown, className, size = 'norma
     normal: 32
   }
   return (
-    <Image className={finalClassName} src={url} height={sizeDictionary[size]} width={sizeDictionary[size]} alt={alt} />
+    <Image draggable={false} className={finalClassName} src={url} height={sizeDictionary[size]} width={sizeDictionary[size]} alt={alt} />
   )
 }

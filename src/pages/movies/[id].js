@@ -41,6 +41,7 @@ export default function MoviePage ({ userVideoData, auth }) {
   const title = decodeURI(router.query.title)
   const [volume, setVolume] = useState(50)
   const { openModal, closeModal, Modal } = useModal()
+  
   useEffect(() => {
     return () => {
       clearTimeout(timer.current)
@@ -60,6 +61,7 @@ export default function MoviePage ({ userVideoData, auth }) {
   }
 
   const handleMouseUpProgressBar = (e) => {
+    console.log('value, ', e.target.value / 100)
     playerRef.current.seekTo(e.target.value / 100, 'fraction')
   }
 
@@ -71,16 +73,25 @@ export default function MoviePage ({ userVideoData, auth }) {
     panelRef.current.classList.add(styles['opacity-0'])
   }
 
-  const handleOnMove = (e) => {
-    if (timer.current) clearTimeout(timer.current)
-    showPanel()
+  const handlePlay = (e) => {
     timer.current = setTimeout(() => {
       hidePanel()
     }, 1300)
   }
 
+  const handleClick = (e) => {
+    panelRef.current.classList.toggle(styles['opacity-0'])
+  }
+
+  const handlePause = (e) => {
+    clearTimeout(timer.current)
+    showPanel()
+  }
+
   const handleToggleIsPlaying = (e) => {
-    setIsPlaying((prev) => !prev)
+    if (!panelRef.current.classList.contains(styles['opacity-0'])) {
+      setIsPlaying((prev) => !prev)
+    }
   }
 
   const handleVideoProgress = ({ playedSeconds }) => {
@@ -109,29 +120,30 @@ export default function MoviePage ({ userVideoData, auth }) {
             />
         </Modal>
         {isClient &&
-        <div className={styles.movie__video} >
+        <div className={styles.movie__video} onClick={showPanel}>
           <ReactPlayer
             url={`https://vimeo.com/${videoId}`}
             volume={Number(volume) / 100}
             playing={isPlaying}
             height={'100%'}
             width={'100%'}
+            onPlay={handlePlay}
             onStart={handleOnStart}
-            onPause={() => { showPanel() }}
+            onPause={handlePause}
             onProgress={handleVideoProgress}
             ref={playerRef}
           />
         </div>
         }
 
-        <div className={styles.panel} ref={panelRef} onMouseMove={handleOnMove}>
+        <div className={styles.panel} ref={panelRef}>
           <div className={styles.panel__header}>
             <Link href={'/'} scroll={false}>
               <Icon url={'/arrow.svg'} alt={'go back'} />
             </Link>
             <Text content={title} type={'relevant'} />
           </div>
-          <div className={styles['panel__video-space']} onClick={handleToggleIsPlaying}></div>
+          <div className={styles['panel__video-space']} onClick={ handleClick }></div>
           <div className={styles.panel__menu}>
             <div className={styles.panel__controllers}>
               <PlayButton onClick={handleToggleIsPlaying} isPlaying={isPlaying} />
@@ -140,15 +152,21 @@ export default function MoviePage ({ userVideoData, auth }) {
                 handleMouseUp={handleMouseUpProgressBar}
               />
             </div>
-            <div className={styles['panel__interaction-buttons']}>
+            <div className={styles['panel__interaction-buttons']} >
               <div className={styles.volume}>
-                <Icon url={'/volume.svg'} alt={'volume'} />
+                <Icon
+                  url={'/volume.svg'}
+                  alt={'volume'}
+                />
                 <Slider
                   initValue={volume}
                   handleMouseUp={handleSetVolume}
                 />
               </div>
-              <LikeButtons initValue={userVideoData.likedStatus} clickNoLoggedCB={ () => { setIsPlaying(false); openModal() }} />
+              <LikeButtons
+                initValue={userVideoData.likedStatus}
+                clickNoLoggedCB={ () => { setIsPlaying(false); openModal() }}
+              />
               <ShareButton />
             </div>
           </div>
