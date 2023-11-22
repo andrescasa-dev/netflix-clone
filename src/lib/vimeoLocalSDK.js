@@ -4,21 +4,21 @@ import formatTime from './formatTime'
 import getParamUri from './getParamUir'
 import { getPlaiceholder } from 'plaiceholder'
 
-const getBase64Image = async (imgUrl) => {
+const getImageColor = async (imgUrl) => {
   const response = await fetch(imgUrl)
   const buffer = Buffer.from(await response.arrayBuffer())
-  const { base64 } = await getPlaiceholder(buffer)
-  return base64
+  const { color } = await getPlaiceholder(buffer)
+  return color
 }
 
 const minifyVimeoVideo = async ({ uri, name, pictures }) => {
-  const imgBase64 = await getBase64Image(pictures.base_link)
+  const imgColor = await getImageColor(pictures.base_link)
   return {
     id: uri.split('/')[2],
     imgAlt: name,
     title: name,
     imgUrl: pictures.base_link,
-    imgBase64
+    imgColor
   }
 }
 

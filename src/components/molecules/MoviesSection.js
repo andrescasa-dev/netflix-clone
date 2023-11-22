@@ -22,7 +22,7 @@ export default function MoviesSection ({ subtitle = 'subtitle', sizeOfCards = 'm
         key={video.id || i}
         size={sizeOfCards}
         imgUrl={video.imgUrl}
-        imgBase64={video.imgBase64}
+        imgColor={video.imgColor}
         alt={video.imgAlt}
         inheritHeight = {inheritHeight}
       />

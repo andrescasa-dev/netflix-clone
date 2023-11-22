@@ -9,7 +9,8 @@
   display: grid;
   height: 100vh;
   place-content: center;
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%)
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
+  overflow: hidden;
 }
 
 .background {

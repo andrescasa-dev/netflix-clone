@@ -4,7 +4,7 @@ import { useState } from 'react'
 import PreviewModal from '../organisms/PreviewModal'
 import { useModal } from './Modal'
 
-export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not found', id, inheritHeight = true, imgBase64 }) {
+export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not found', id, inheritHeight = true, imgColor }) {
   const [finalImgUrl, setFinalImgUrl] = useState(imgUrl)
   const { Modal, openModal } = useModal()
 
@@ -35,8 +35,7 @@ export default function MovieCard ({ size = 'mid', imgUrl = '', alt = 'movie not
           src={finalImgUrl}
           alt={alt}
           onError={handleError}
-          placeholder='blur'
-          blurDataURL={imgBase64}
+          style={{ backgroundColor: imgColor.hex }}
         />
     </article>
   )

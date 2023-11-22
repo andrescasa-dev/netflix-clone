@@ -1,12 +1,12 @@
 /**
- * Actualiza la tabla user_videos siempre y cuando que los nombre de las variables en videoData coincidan con las variables en la base de datos
+ * Updates the user_videos table as long as the variable names in videoData match the variables in the database.
  * @example
  * const videoData = {
- *   video_id: '12345', // error la variable en la DB se llama videoId
+ *   video_id: '12345', // error the variable in the DB is called videoId
  *   userId: 'user123',
- *   has_been_watched: true, // error la variable en la DB se llama watchedAt y es un timestamp
+ *   has_been_watched: true, // error the variable in the DB is called watchedAt and is a timestamp
  *   likedStatus: 1,
- *   // ... otros campos de datos
+ *   // ...
  * };
  */
 

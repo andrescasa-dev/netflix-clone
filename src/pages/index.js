@@ -48,7 +48,7 @@ export default function Home ({ videos }) {
         <title>Local Netflix Clone</title>
         <meta name="description" content="NextJS practice project, a basic Netflix clone" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/nfavicon.ico" />
       </Head>
       <Header />
       <main className={`mainLayout ${robotSlab.className}`}>
