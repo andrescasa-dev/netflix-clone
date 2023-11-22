@@ -41,7 +41,7 @@ export default function MoviePage ({ userVideoData, auth }) {
   const title = decodeURI(router.query.title)
   const [volume, setVolume] = useState(50)
   const { openModal, closeModal, Modal } = useModal()
-  
+
   useEffect(() => {
     return () => {
       clearTimeout(timer.current)
